@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import Header from "./components/header";
 import Products from "./components/products";
-import AlertMessage from "./components/alertMessage";
-function App() {
-  const [count, setCount] = useState(0);
 
+export const shoppingCar = createContext(null);
+
+function App() {
   return (
     <>
       <Header />
       <Products />
-      <AlertMessage/>
     </>
   );
 }

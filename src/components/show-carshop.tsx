@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CarShopContext, CarShop } from "../context/car-shop";
+import { getTotal } from "./products";
 
 export default function CarShopScreen() {
   const { carShop, setCarShop } = useContext(CarShopContext);
@@ -9,9 +10,10 @@ export default function CarShopScreen() {
   const handleClick = (e) => e.target.offsetParent.classList.toggle("hidden");
 
   function handleClickDelete(key) {
-    const newCarShop = { ...carShop };
-    delete newCarShop.elements[key];
-    setCarShop({ ...newCarShop });
+    const newCarShop: CarShop = { ...carShop };
+    delete newCarShop.elements[key]
+    // newCarShop.total = getTotal(newCarShop)
+    setCarShop({ ...newCarShop, total : getTotal(newCarShop)});
   }
 
   return (

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CarShop, CarShopContext } from "../context/car-shop";
 
-const URL = "http://localhost:3000";
+
 
 const styles = ["z-10", "fixed", "top-auto", "left-auto"];
 
@@ -12,12 +12,19 @@ export interface Product {
   units: number;
 }
 
+export interface Element{
+  image: string;
+  price: number;
+  units: number;
+}
+
+
 function useFilter(list: Array<Product>, filter: string) {
   if (filter == "") return list;
   return list.filter((el) => el.product.toLowerCase().includes(filter));
 }
 
-export default function Products() {
+export default function Products({URL}) {
   const [products, setProducts]: [Array<Product>, Function] = useState([]);
 
   const [filter, setFilter]: [string, Function] = useState("");
@@ -26,30 +33,79 @@ export default function Products() {
 
   const [actual, setActual]: [MouseEvent | Object, Function] = useState({});
 
-  const { carShop, setCarShop } = useContext(CarShopContext);
+  const {carShop, setCarShop} = useContext(CarShopContext);
 
   function handleClick(event: MouseEvent) {
-    styles.forEach((style) => {
-      if (Object.entries(actual).length != 0) {
-        actual.target.offsetParent.classList.remove(style);
-      }
-      event.target.offsetParent.classList.add(style);
+    // styles.forEach((style) => {
+    //   if (Object.entries(actual).length != 0) {
+    //     actual.target.offsetParent.classList.remove(style);
+    //   }
+    //   event.target.offsetParent.classList.add(style);
+    // });
+    // setActual(event);
+  }
+
+  function getTotal(newCar : CarShop) {
+    let newTotal = 0;
+
+    Object.entries(newCar.elements).forEach(([key, value]:[string,Element]) => {
+      newTotal += value.price * value.units;
     });
-    setActual(event);
+    return newTotal;
   }
 
-  function handleClickAdd(product: Product) {
-    const newTotal = carShop.elements.length != 0 ? (carShop.elements).reduce((lastVal,nextVal) => lastVal.price + nextVal.price) + product.price : product.price;
-    console.log(newTotal)
-    setCarShop({total: newTotal , elements : [...carShop.elements,product]});
-    console.log(carShop)
+  function handleClickAdd({ product, image, price, units }: Product) {
+    const element = carShop.elements[product];
+
+    let newCar: CarShop;
+
+    if (!element) {
+      const newProduct = { image, price, units: 1 };
+      newCar = {
+        ...carShop,
+        elements: { ...carShop.elements, [product]: newProduct },
+      };
+    } else {
+
+      const newUnits = element.units + (element.units <= 100 && (1));
+      newCar = {
+        ...carShop,
+        elements: {
+          ...carShop.elements,
+          [product]: { ...element, units: newUnits },
+        },
+      };
+    }
+
+    const newTotal = getTotal(newCar);
+
+    setCarShop({ ...newCar, total: newTotal });
   }
 
-  function handleClickMinus(product: Product) {
-    // const newTotal = (carShop.elements).reduce((lastVal,nextVal) => lastVal.price + nextVal.price) + product.price;
-    // console.log(newTotal)
-    console.log(carShop)
-    setCarShop({...carShop, elements : [...carShop.elements,product]});
+  function handleClickMinus({ product,units}: Product) {
+    const element = carShop.elements[product];
+
+    let newCar: CarShop;
+
+    if (!element) {
+      return
+    } else {
+      const newUnits = element.units - 1;
+      newCar = {
+        ...carShop,
+        elements: {
+          ...carShop.elements,
+          [product ]: { ...element, units: newUnits },
+        },
+      };
+      if (newUnits === 0) {
+        delete newCar.elements[product];
+      }
+    }
+
+    const newTotal = getTotal(newCar);
+
+    setCarShop({ ...newCar, total: newTotal });
   }
 
   useEffect(() => {
@@ -93,7 +149,6 @@ export default function Products() {
                   src={el.image}
                   alt={el.product}
                   className="rounded-t-xl h-48"
-                  onClick={(e) => handleClick(e)}
                 />
                 <section className="h-20 bg-slate-50 border-t-2 p-1 relative">
                   <p>{el.product}</p>
@@ -103,6 +158,7 @@ export default function Products() {
                     src="/icons/minus-icon.png"
                     alt="plus"
                     className="h-5 absolute right-8 bottom-2 bg-slate-500 p-1 rounded-[50%] cursor-pointer"
+                    onClick={()=> handleClickMinus(el)}
                   />
                   <img
                     src="/icons/add-icon.png"

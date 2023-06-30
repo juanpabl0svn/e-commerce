@@ -1,24 +1,17 @@
 import { useContext } from "react";
-import { CarShopContext, CarShop } from "../context/car-shop";
-import { getTotal } from "./products";
+import { CarShopContext } from "../context/car-shop";
+import ShoppingCarElement from "./shopping-car-element";
 
 export default function CarShopScreen() {
   const { carShop, setCarShop } = useContext(CarShopContext);
 
   const carShopElements = Object.entries(carShop.elements);
 
-  const handleClick = (e) => e.target.offsetParent.classList.toggle("hidden");
-
-  function handleClickDelete(key) {
-    const newCarShop: CarShop = { ...carShop };
-    delete newCarShop.elements[key]
-    // newCarShop.total = getTotal(newCarShop)
-    setCarShop({ ...newCarShop, total : getTotal(newCarShop)});
-  }
+  const handleClick = (e) => e.target.offsetParent.classList.add("hidden");
 
   return (
     <section
-      className="fixed bg-slate-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-3/4 p-14 pb-20 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg hidden"
+      className="fixed bg-slate-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-3/4 p-14 pb-24 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg min-w-[400px] max-w-[900px] hidden"
       id="shopping-car"
     >
       <input
@@ -31,31 +24,38 @@ export default function CarShopScreen() {
         {carShopElements.length > 0 ? (
           carShopElements.map(([key, { image, price, units }]) => {
             return (
-              <article
+              <ShoppingCarElement
                 key={key}
-                className="relative flex items-center bg-white gap-2 h-36 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-              >
-                <img src={image} alt={key} className="h-5/6" />
-                <div className="">
-                  <p className="text-white">{key}</p>
-                  <p>units: {units}</p>
-                  <p>total:{units * price}</p>
-                </div>
-                <input
-                  type="button"
-                  value="X"
-                  className="absolute right-4 cursor-pointer"
-                  onClick={() => handleClickDelete(key)}
-                />
-              </article>
+                element={key}
+                image={image}
+                price={price}
+                units={units}
+                carShop={carShop}
+                setCarShop={setCarShop}
+              />
             );
           })
         ) : (
           <h1>No hay articulos</h1>
         )}
       </div>
+      <input
+        type="button"
+        value="Purchase"
+        className={`absolute  bottom-6 bg-gray-300 py-3 px-5 rounded-lg text-white ${
+          carShopElements.length != 0 &&
+          "bg-green-400 cursor-pointer hover:scale-105 transition-all duration-[340ms]"
+        }`}
+        onClick={
+          carShopElements.length != 0 ? () => alert("comprado") : undefined
+        }
+      />
       <h1 className="absolute right-20 bottom-6 font-bold text-xl">
-        Total: {carShop.total}
+        Total:{" "}
+        {carShop.total.toLocaleString("en", {
+          style: "currency",
+          currency: "USD",
+        })}
       </h1>
     </section>
   );

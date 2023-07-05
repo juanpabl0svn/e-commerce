@@ -1,8 +1,8 @@
 import { useState, createContext } from "react";
 import Header from "./components/header";
 import Products from "./components/products";
-import CarShop from "./context/car-shop";
-import CarShopScreen from "./components/show-carshop";
+import CarShop from "./context/shopping-car-context";
+import CarShopScreen from "./components/shopping-car";
 
 export const shoppingCar = createContext(null);
 

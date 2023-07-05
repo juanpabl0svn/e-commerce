@@ -1,13 +1,13 @@
-import {CarShop } from "../context/car-shop";
+import {ShoppingCar} from "../context/shopping-car-context";
 import { getTotal } from "./product";
 
 
-export default function ShoppingCarElement({ element, image, units, price,carShop, setCarShop }:{ element:string, image:string, units:number, price: number,carShop :CarShop, setCarShop:Function }) {
+export default function ShoppingCarElement({ element, image, units, price,shoppingCar, setShoppingCar }:{ element:string, image:string, units:number, price: number,shoppingCar :ShoppingCar, setShoppingCar:Function }) {
   
     function handleClickDelete(key: string) {
-    const newCarShop: CarShop = { ...carShop };
+    const newCarShop: ShoppingCar = { ...shoppingCar };
     delete newCarShop.elements[key];
-    setCarShop({ ...newCarShop, total: getTotal(newCarShop) });
+    setShoppingCar({ ...newCarShop, total: getTotal(newCarShop) });
   }
 
   return (

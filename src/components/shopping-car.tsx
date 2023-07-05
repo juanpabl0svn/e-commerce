@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { CarShopContext } from "../context/car-shop";
+import { ShoppingCarContext } from "../context/shopping-car-context";
 import ShoppingCarElement from "./shopping-car-element";
 
 export default function CarShopScreen() {
-  const { carShop, setCarShop } = useContext(CarShopContext);
+  const { shoppingCar, setShoppingCar } = useContext(ShoppingCarContext);
 
-  const carShopElements = Object.entries(carShop.elements);
+  const carShopElements = Object.entries(shoppingCar.elements);
 
   const handleClick = (e) => e.target.offsetParent.classList.add("hidden");
 
@@ -30,8 +30,8 @@ export default function CarShopScreen() {
                 image={image}
                 price={price}
                 units={units}
-                carShop={carShop}
-                setCarShop={setCarShop}
+                shoppingCar={shoppingCar}
+                setShoppingCar={setShoppingCar}
               />
             );
           })
@@ -52,7 +52,7 @@ export default function CarShopScreen() {
       />
       <h1 className="absolute right-20 bottom-6 font-bold text-xl">
         Total:{" "}
-        {carShop.total.toLocaleString("en", {
+        {shoppingCar.total.toLocaleString("en", {
           style: "currency",
           currency: "USD",
         })}

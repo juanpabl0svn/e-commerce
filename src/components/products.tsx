@@ -4,7 +4,7 @@ import Product,{IProduct} from "./product";
 
 function useFilter(list: Array<IProduct>, filter: string) {
   if (filter == "") return list;
-  return list.filter((el) => el.product.toLowerCase().includes(filter));
+  return list.filter((el) => el.name.toLowerCase().includes(filter));
 }
 
 export default function Products({ URL }) {
@@ -18,10 +18,10 @@ export default function Products({ URL }) {
 
   useEffect(() => {
     const getProducts = async () => {
-      const req = await fetch(URL + "/db.json");
+      const req = await fetch(URL);
       const res = await req.json();
       setProducts(res);
-    };
+    }; 
     getProducts();
   }, []);
 

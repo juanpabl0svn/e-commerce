@@ -20,7 +20,7 @@ export default function CarShopScreen() {
         className="absolute right-4 top-4 w-6 cursor-pointer"
         onClick={handleClick}
       />
-      <div className="h-full overflow-y-auto flex flex-col gap-2">
+      <div className={`relative h-full overflow-y-scroll flex flex-col gap-2 ${shoppingCar.elements.length <4 && 'left-10'}`}>
         {carShopElements.length > 0 ? (
           carShopElements.map(([key, { image, price, units }]) => {
             return (

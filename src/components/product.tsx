@@ -23,7 +23,6 @@ export function getTotal(newCar: ShoppingCar) {
   });
   return newTotal;
 }
-
 export default function Product({ el, price }) {
   const { shoppingCar, setShoppingCar } = useContext(ShoppingCarContext);
 

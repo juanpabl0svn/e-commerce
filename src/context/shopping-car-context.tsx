@@ -10,11 +10,12 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     total: 0,
   };
 
-  const [shoppingCar, setShoppingCar]: [IShoppingCar, Function] = useState(fisrtValue);
-
+  
+  const [shoppingCar,setShoppingCar] = useState(fisrtValue)
+  
   return (
     <ShoppingCarContext.Provider value={{ shoppingCar, setShoppingCar }}>
       {children}
     </ShoppingCarContext.Provider>
   );
-}
+  }

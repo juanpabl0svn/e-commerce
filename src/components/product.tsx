@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ShoppingCarContext } from "../context/shopping-car-context";
 
 export interface IProduct {
@@ -44,7 +44,7 @@ export default function Product({ el, price,handleClickImage,element }) {
   function handleClickAdd({ name, image, price, units }: IProduct) {
     const element = shoppingCar.elements[name];
 
-    let newCar: ShoppingCar;
+    let newCar: IShoppingCar;
 
     if (!element) {
       const newProduct = { image, price, units: 1 };
@@ -73,7 +73,7 @@ export default function Product({ el, price,handleClickImage,element }) {
   function handleClickMinus({ name }: IProduct) {
     const element = shoppingCar.elements[name];
 
-    let newCar: ShoppingCar;
+    let newCar: IShoppingCar;
 
     if (!element) return;
     else {
@@ -101,7 +101,7 @@ export default function Product({ el, price,handleClickImage,element }) {
       <img
         src={el.image}
         alt={el.name}
-        className={`rounded-t-xl h-48 aspect-auto `}
+        className={`rounded-t-xl h-48 aspect-auto`}
         style={{ viewTransitionName: `image-${el._id}`, contain: "layout" }}
         onClick={() => handleClickImage(el)}
       />

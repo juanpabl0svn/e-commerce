@@ -13,8 +13,8 @@ export default function ShoppingCarElement({
   image: string;
   units: number;
   price: number;
-  shoppingCar: IShoppingCar;
-  setShoppingCar: Function;
+  shoppingCar: any;
+  setShoppingCar: any;
 }) {
   function handleClickDelete(key: string) {
     const newCarShop: IShoppingCar = { ...shoppingCar };

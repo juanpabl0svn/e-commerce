@@ -7,3 +7,9 @@
     src: url('/fonts/Georigia.ttf')
 }
 
+
+
+::view-transition-old(root),
+::view-transition-old(root){
+    @apply transition-all duration-[1000ms] ease-in-out;
+}

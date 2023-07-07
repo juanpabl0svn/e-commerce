@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { ShoppingCarContext, ShoppingCar } from "../context/shopping-car-context";
-
+import { useContext, useState } from "react";
+import { ShoppingCarContext } from "../context/shopping-car-context";
 
 export interface IProduct {
+  _id: string;
   name: string;
   image: string;
   price: number;
@@ -10,21 +10,36 @@ export interface IProduct {
 }
 
 export interface IElement {
+  id?:string
   image: string;
   price: number;
   units: number;
 }
 
-export function getTotal(newCar: ShoppingCar) {
+export interface IShoppingCar {
+  elements?: Array<IProduct> | Object;
+  total?: number;
+}
+export type TShoppingCar = {
+  shoppingCar?: IShoppingCar;
+  setShoppingCar?: Function;
+};
+
+export function getTotal(newCar: IShoppingCar) {
   let newTotal = 0;
 
-  Object.entries(newCar.elements).forEach(([key, value]: [string, IElement]) => {
-    newTotal += value.price * value.units;
-  });
+  Object.entries(newCar.elements).forEach(
+    ([key, value]: [string, IElement]) => {
+      newTotal += value.price * value.units;
+    }
+  );
   return newTotal;
 }
-export default function Product({ el, price }) {
-  const { shoppingCar, setShoppingCar } = useContext(ShoppingCarContext);
+
+export default function Product({ el, price,handleClickImage,element }) {
+  const { shoppingCar, setShoppingCar }: TShoppingCar =
+    useContext(ShoppingCarContext);
+
 
   function handleClickAdd({ name, image, price, units }: IProduct) {
     const element = shoppingCar.elements[name];
@@ -55,7 +70,7 @@ export default function Product({ el, price }) {
     setShoppingCar({ ...newCar, total: newTotal });
   }
 
-  function handleClickMinus({ name, units }: IProduct) {
+  function handleClickMinus({ name }: IProduct) {
     const element = shoppingCar.elements[name];
 
     let newCar: ShoppingCar;
@@ -82,16 +97,18 @@ export default function Product({ el, price }) {
 
 
   return (
-    <article
-      className="h-auto w-auto object-cover hover:scale-105 transition-all cursor-pointer duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px]"
-    >
+    <article className={`h-auto w-auto object-cover hover:scale-105 transition-all cursor-pointer duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${element != null && element.name == el.name && 'hidden'}`}>
       <img
         src={el.image}
         alt={el.name}
-        className="rounded-t-xl h-48 aspect-auto"
+        className={`rounded-t-xl h-48 aspect-auto `}
+        style={{ viewTransitionName: `image-${el._id}`, contain: "layout" }}
+        onClick={() => handleClickImage(el)}
       />
       <section className="h-20 bg-slate-50 border-t-2 p-1 relative">
-        <p>{el.name}</p>
+        <p style={{ viewTransitionName: `label-${el._id}`, contain: "layout" }}>
+          {el.name}
+        </p>
         <p>{price}</p>
         <p>{el.units === 0 ? "Agotado" : el.units}</p>
         <img

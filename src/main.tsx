@@ -1,27 +1,39 @@
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import App from "./templates/App";
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ShoppingCar from "./context/shopping-car-context";
-import Errror404 from './errror404';
+import Errror404 from "./errror404";
+import Products from "./components/products";
+import ProductInfo from "./components/product-info";
 
+const URL = "http://localhost:3000";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <App>
+        <Products URL={URL} />
+      </App>
+    ),
+  },
+  {
+    path: "/products/:id",
+    element: (
+      <App>
+        <ProductInfo URL={URL} />
+      </App>
+    ),
   },
   {
     path: "/*",
-    element: <Errror404/>,
+    element: <Errror404 />,
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ShoppingCar>
     <RouterProvider router={router} />
-  </ShoppingCar>,
-)
+  </ShoppingCar>
+);

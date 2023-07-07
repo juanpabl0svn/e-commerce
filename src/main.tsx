@@ -6,8 +6,11 @@ import ShoppingCar from "./context/shopping-car-context";
 import Errror404 from "./errror404";
 import Products from "./components/products";
 import ProductInfo from "./components/product-info";
+import Carrousel from "./components/carrousel";
 
 const URL = "http://localhost:3000";
+
+
 
 const router = createBrowserRouter([
   {
@@ -17,6 +20,10 @@ const router = createBrowserRouter([
         <Products URL={URL} />
       </App>
     ),
+  },
+  {
+    path: "/ejemplo",
+    element: <Carrousel/>,
   },
   {
     path: "/products/:id",

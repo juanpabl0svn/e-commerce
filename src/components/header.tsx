@@ -1,3 +1,6 @@
+import Carrousel from "./carrousel";
+
+
 export default function Header() {
   function handleClick() {
     const shoppingCar = document.getElementById("shopping-car");
@@ -10,7 +13,7 @@ export default function Header() {
       <h1 className="">E-commerce</h1>
       <img
         src="/icons/shopping-car.png"
-        alt=""
+        alt="shopping-car"
         className="h-12 absolute top-3 right-3 hover:-rotate-12 cursor-pointer transition-all duration-200 bg-white rounded-[50%] p-2"
         onClick={handleClick}
       />

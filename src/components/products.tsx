@@ -7,7 +7,7 @@ export default function Products({ URL }) {
 
   const [element, setElement]: [IElement | null, Function] = useState(null);
 
-  function handleClick(e) {
+  function handleClick() {
     if (!document.startViewTransition) return;
     document.startViewTransition(() => flushSync(() => {
       setElement();
@@ -15,6 +15,7 @@ export default function Products({ URL }) {
   }
 
   function handleClickImage(el) {
+    if(element != null) handleClick()
     if (!document.startViewTransition) return;
     document.startViewTransition(() => flushSync(() => {
       setElement(el);
@@ -62,13 +63,10 @@ export default function Products({ URL }) {
           <article>
             <img
               src={element.image}
-              style={{
-                viewTransitionName: `image-${element._id}`,
-                contain: "layout",
-              }}
+              className={`contain:layout ${element != null && `view-transition-name:image-${element.image}`}`}
               alt=""
             />
-            <p className="text-3xl" style={{ viewTransitionName: `label-${element._id}`, contain: "layout" }}>
+            <p className={`text-3xl contain:layout ${element != null && `view-transition-name:image-${element.image}`}`}>
               {element.name}
             </p>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus distinctio delectus laborum laboriosam quibusdam. Quas porro nam cupiditate blanditiis! Voluptatem doloribus magnam eligendi ab perspiciatis fuga? In eius quos mollitia! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat sint libero ea dignissimos, necessitatibus eius tenetur itaque, dolor, recusandae ratione quidem inventore culpa nihil suscipit alias excepturi at. Quia, consequatur.</p>

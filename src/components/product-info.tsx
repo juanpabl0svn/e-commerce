@@ -32,13 +32,13 @@ const ProductInfo = ({ URL }) => {
       {product != null && (
         <>
           <img
-            style={{ viewTransitionName: `image-${id}`, content: "layout" }}
+            className={`view-transition-name:image-${product.image}`}
             src={product.image}
           />
           <label
+          className={`view-transition-name:label-${product.name}`}
             htmlFor=""
-            style={{ viewTransitionName: `label-${id}`, content: "layout" }}
-          >
+             >
             {product.name}
           </label>
         </>

@@ -1,5 +1,3 @@
-import Carrousel from "./carrousel";
-
 
 export default function Header() {
   function handleClick() {
@@ -9,8 +7,12 @@ export default function Header() {
     shoppingCar.classList.remove("hidden");
   }
   return (
-    <header className="text-white bg-slate-600 p-6 w-full relative">
+    <header className="text-white bg-slate-600 p-6 w-full relative flex justify-between pr-20">
       <h1 className="">E-commerce</h1>
+      <div className="flex gap-3">
+      <a href="/login">Crear cuenta</a>
+      <a href="/login">Iniciar sesión</a>
+      </div>
       <img
         src="/icons/shopping-car.png"
         alt="shopping-car"

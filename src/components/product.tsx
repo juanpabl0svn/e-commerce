@@ -97,16 +97,15 @@ export default function Product({ el, price,handleClickImage,element }) {
 
 
   return (
-    <article className={`h-auto w-auto object-cover hover:scale-105 transition-all cursor-pointer duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${element != null && element.name == el.name && 'opacity-0'}`}>
+    <article className={`h-auto w-auto object-cover hover:scale-105 transition-all duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${element != null && element.name == el.name && 'opacity-0'}`}>
       <img
         src={el.image}
         alt={el.name}
-        className={`rounded-t-xl h-48 aspect-auto -z-10`}
-        style={{ viewTransitionName: `${element === null ? `image-${el._id}`: el._id}`, contain: "layout" }}
-        onClick={() => handleClickImage(el)}
+        className={`rounded-t-xl h-48 aspect-auto ${(element?.name != el?.name || element == null)&& 'cursor-pointer'}`}
+        onClick={() =>  (element?.name != el?.name || element == null) && handleClickImage(el)}
       />
       <section className="h-20 bg-slate-50 border-t-2 p-1 relative">
-        <p style={{ viewTransitionName: `label-${el._id}`, contain: "layout" }}>
+        <p>
           {el.name}
         </p>
         <p>{price}</p>

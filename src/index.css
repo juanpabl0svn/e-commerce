@@ -11,5 +11,5 @@
 
 ::view-transition-old(root),
 ::view-transition-old(root){
-    @apply transition-all duration-200;
+    @apply transition-all duration-500;
 }

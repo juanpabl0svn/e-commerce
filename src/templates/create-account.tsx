@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 
-export default function CreateAccount() {
+export default function CreateAccount({URL}) {
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const data = Object.fromEntries(
       new FormData(e.target)
     )
-    console.log(data)
+
+    const req = await fetch(URL+'/account',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const res = await req.json()
+
+    console.log(res)
+
+
   }
 
   function handleChange(event){
@@ -22,10 +34,6 @@ export default function CreateAccount() {
   function handleChangePassword(event){
     if (!handleChange(event)) return
     const value = event.target.value
-
-
-    
-
   }
 
 
@@ -60,7 +68,7 @@ export default function CreateAccount() {
           </div>
           <label htmlFor="repeat-password">Repetir contraseña</label>
           <div>
-            <input onChange={handleChange} id="repeat-password" name="repeat-password" type="text" />
+            <input onChange={handleChange} id="repeat-password"  type="text" />
           </div>
           <button>Save</button>
         </form>

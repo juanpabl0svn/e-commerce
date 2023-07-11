@@ -7,9 +7,56 @@
     src: url('/fonts/Georigia.ttf')
 }
 
-
-
 ::view-transition-old(root),
-::view-transition-old(root){
-    @apply transition-all duration-500;
+::view-transition-new(root){
+    transition: all 10s ease-in-out;
 }
+
+
+/* 
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: fade-and-scale-in 10s ease-in-out 1 forwards;
+  } 
+  
+  @keyframes fade-and-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes fade-and-scale-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slide-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  } */

@@ -8,9 +8,9 @@ export default function Header() {
   }
   return (
     <header className="text-white bg-slate-600 p-6 w-full relative flex justify-between pr-20">
-      <h1 className="">E-commerce</h1>
+      <a href="/" className="">E-commerce</a>
       <div className="flex gap-3">
-      <a href="/login">Crear cuenta</a>
+      <a href="/account">Crear cuenta</a>
       <a href="/login">Iniciar sesión</a>
       </div>
       <img

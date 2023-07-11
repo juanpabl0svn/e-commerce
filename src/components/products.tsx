@@ -54,7 +54,7 @@ export default function Products({ URL }) {
             />
 
           <section className="overflow-y-scroll h-full">
-            <img src={element.image} className="rounded-md" alt={element._id} />
+            <img onClick={()=> location.href = `/products/${element._id}`} src={element.image} className={`rounded-md view-transition-name:image-${element._id}`} alt={element._id} />
             <p className="">{element.name}</p>
             <p className="">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.

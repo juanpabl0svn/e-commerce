@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { flushSync } from "react-dom";
 
 function Errror404() {
   const navigate = useNavigate();
@@ -7,11 +6,8 @@ function Errror404() {
 
   function handleClick(){
 
-    if (!document.startViewTransition){
         navigate("/")
-        return
-    }
-    document.startViewTransition(()=> flushSync(()=> navigate('/')))
+
     
   }
 

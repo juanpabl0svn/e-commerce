@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { flushSync } from "react-dom";
 
 function useData() {
   const [data, setData] = useState("");
@@ -14,9 +13,8 @@ function useData() {
   return [data, setDataValue];
 }
 
-export default function LogIn({URL}) {
+export default function LogIn({ URL }) {
   const [seePassword, setSeePassword] = useState(false);
-
 
   const navigate = useNavigate();
 
@@ -27,37 +25,25 @@ export default function LogIn({URL}) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const data = Object.fromEntries(
-      new FormData(e.target)
-    )
+    const data = Object.fromEntries(new FormData(e.target));
 
-    try{
-      const req = await fetch(URL+'/user',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      const res = await req.json()
-      console.log(res)
+    const req = await fetch(URL + "/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (req.status === 204) {
+      console.log("Error");
+      return;
     }
-    catch{
-      console.log('dios')
-
-    }
-
-
-    console.log(res)
+    navigate("/");
   }
 
   function handleExit(e) {
-    navigate('/')
-    // if (!document.startViewTransition) {
-    //   navigate("/");
-    //   return;
-    // }
-    // document.startViewTransition(() => flushSync(() => navigate("/")));
+    navigate("/");
   }
 
   return (
@@ -67,6 +53,7 @@ export default function LogIn({URL}) {
           <label htmlFor="username">Usuario</label>
           <div className="relative flex items-center">
             <input
+              required
               type="text"
               id="username"
               name="username"
@@ -80,6 +67,7 @@ export default function LogIn({URL}) {
           <label htmlFor="password">Contraseña</label>
           <div className="relative flex items-center">
             <input
+              required
               type={seePassword ? "text" : "password"}
               id="password"
               name="password"
@@ -104,21 +92,19 @@ export default function LogIn({URL}) {
               )}
             </span>
           </div>
-          <button
-            className="relative mt-10 flex items-center justify-center bg-blue-200 mx-auto w-40 h-10 rounded-3xl transition-all hover:bg-slate-300 active:scale-90"
-          >
+          <button className="relative mt-10 flex items-center justify-center bg-blue-200 mx-auto w-40 h-10 rounded-3xl transition-all hover:bg-slate-300 active:scale-90">
             <p>Log In</p>
             <span className="absolute right-4">
               <img src="/icons/login.png" alt="login" className="h-5" />
             </span>
           </button>
         </form>
-          <button
-            className="relative mt-3 flex items-center justify-center bg-blue-200 mx-auto w-40 h-10 rounded-3xl transition-all hover:bg-slate-300 active:scale-90"
-            onClick={handleExit}
-          >
-            <p>Back</p>
-          </button>
+        <button
+          className="relative mt-3 flex items-center justify-center bg-blue-200 mx-auto w-40 h-10 rounded-3xl transition-all hover:bg-slate-300 active:scale-90"
+          onClick={handleExit}
+        >
+          <p>Back</p>
+        </button>
       </section>
     </article>
   );

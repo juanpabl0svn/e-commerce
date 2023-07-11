@@ -18,7 +18,7 @@ export default function ShoppingCarElement({
 }) {
   function handleClickDelete(key: string) {
     const newCarShop: IShoppingCar = { ...shoppingCar };
-    delete newCarShop.elements[key];
+    delete newCarShop.elements![key]
     setShoppingCar({ ...newCarShop, total: getTotal(newCarShop) });
   }
 

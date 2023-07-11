@@ -17,7 +17,7 @@ export interface IElement {
 }
 
 export interface IShoppingCar {
-  elements?: Array<IProduct> | Object;
+  elements: Array<IProduct> | Object;
   total?: number;
 }
 export type TShoppingCar = {
@@ -42,7 +42,7 @@ export default function Product({ el, price,handleClickImage,element }) {
 
 
   function handleClickAdd({ name, image, price, units }: IProduct) {
-    const element = shoppingCar.elements[name];
+    const element = shoppingCar!.elements[name];
 
     let newCar: IShoppingCar;
 
@@ -50,7 +50,7 @@ export default function Product({ el, price,handleClickImage,element }) {
       const newProduct = { image, price, units: 1 };
       newCar = {
         ...shoppingCar,
-        elements: { ...shoppingCar.elements, [name]: newProduct },
+        elements: { ...shoppingCar!.elements, [name]: newProduct },
       };
     } else {
       if (units === element.units) return;
@@ -59,7 +59,7 @@ export default function Product({ el, price,handleClickImage,element }) {
       newCar = {
         ...shoppingCar,
         elements: {
-          ...shoppingCar.elements,
+          ...shoppingCar!.elements,
           [name]: { ...element, units: newUnits },
         },
       };
@@ -67,11 +67,11 @@ export default function Product({ el, price,handleClickImage,element }) {
 
     const newTotal = getTotal(newCar);
 
-    setShoppingCar({ ...newCar, total: newTotal });
+    setShoppingCar!({ ...newCar, total: newTotal });
   }
 
   function handleClickMinus({ name }: IProduct) {
-    const element = shoppingCar.elements[name];
+    const element = shoppingCar!.elements[name];
 
     let newCar: IShoppingCar;
 
@@ -81,7 +81,7 @@ export default function Product({ el, price,handleClickImage,element }) {
       newCar = {
         ...shoppingCar,
         elements: {
-          ...shoppingCar.elements,
+          ...shoppingCar!.elements,
           [name]: { ...element, units: newUnits },
         },
       };
@@ -92,7 +92,7 @@ export default function Product({ el, price,handleClickImage,element }) {
 
     const newTotal = getTotal(newCar);
 
-    setShoppingCar({ ...newCar, total: newTotal });
+    setShoppingCar!({ ...newCar, total: newTotal });
   }
 
 

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { flushSync } from "react-dom";
+import { IProduct } from "./product";
 
 const ProductInfo = ({ URL }) => {
   const { id } = useParams();
 
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState(null);
+  const [product, setProduct]:[IProduct | null ,Function] = useState(null);
 
   useEffect(() => {
     async function getProduct() {
@@ -19,12 +19,7 @@ const ProductInfo = ({ URL }) => {
   }, []);
 
   function handleClickNavigate(event) {
-    event.preventDefault();
-    if (!document.startViewTransition) {
-      navigate(`/products/${id}`);
-      return;
-    }
-    document.startViewTransition(() => flushSync(() => navigate(`/`)));
+    navigate(`/`);
   }
 
   return (
@@ -32,15 +27,9 @@ const ProductInfo = ({ URL }) => {
       {product != null && (
         <>
           <img
-            className={`view-transition-name:image-${product.image}`}
-            src={product.image}
+            className={`view-transition-name:image-${id}`}
+            src={product .image}
           />
-          <label
-          className={`view-transition-name:label-${product.name}`}
-            htmlFor=""
-             >
-            {product.name}
-          </label>
         </>
       )}
       <button onClick={handleClickNavigate}>Volver</button>

@@ -44,7 +44,10 @@ const router = createBrowserRouter([
   },
 ]);
 
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  
+
   <ShoppingCar>
     <RouterProvider router={router} />
   </ShoppingCar>

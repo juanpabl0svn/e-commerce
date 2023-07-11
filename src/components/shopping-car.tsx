@@ -10,7 +10,7 @@ export default function CarShopScreen() {
 
   const { shoppingCar, setShoppingCar }:TShoppingCar = useContext(ShoppingCarContext);
 
-  const carShopElements = Object.entries(shoppingCar.elements);
+  const carShopElements = Object.entries(shoppingCar!.elements);
 
   const handleClick = (e) => e.target.offsetParent.classList.add("hidden");
 
@@ -57,7 +57,7 @@ export default function CarShopScreen() {
       />
       <h1 className="absolute right-20 bottom-6 font-bold text-xl">
         Total:{" "}
-        {shoppingCar?.total.toLocaleString("en", {
+        {shoppingCar!.total!.toLocaleString("en", {
           style: "currency",
           currency: "USD",
         })}

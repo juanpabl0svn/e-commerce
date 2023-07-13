@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProduct } from "../utils/utils.t";
+import { IProduct } from "../utils/types";
 import {motion} from 'framer-motion'
 
 const ProductInfo = ({ URL }) => {
@@ -8,7 +8,7 @@ const ProductInfo = ({ URL }) => {
 
   const navigate = useNavigate();
 
-  const [product, setProduct]: [IProduct | null, Function] = useState(null);
+  const [product, setProduct]: [IProduct | undefined, Function] = useState();
 
   useEffect(() => {
     async function getProduct() {

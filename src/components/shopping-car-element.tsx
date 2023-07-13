@@ -1,24 +1,24 @@
-import { IShoppingCar } from "./product";
 import { getTotal } from "./product";
+import { IShoppingCar } from "../utils/types";
 
 export default function ShoppingCarElement({
-  element,
+  name,
   image,
   units,
   price,
-  shoppingCar,
-  setShoppingCar,
+  context,
 }: {
-  element: string;
+  name: string;
   image: string;
   units: number;
   price: number;
-  shoppingCar: any;
-  setShoppingCar: any;
+  context: Array<IShoppingCar | Function>;
 }) {
+  const [shoppingCar, setShoppingCar] = context as [IShoppingCar, Function];
+
   function handleClickDelete(key: string) {
     const newCarShop: IShoppingCar = { ...shoppingCar };
-    delete newCarShop.elements![key]
+    delete newCarShop.elements[key];
     setShoppingCar({ ...newCarShop, total: getTotal(newCarShop) });
   }
 
@@ -26,11 +26,11 @@ export default function ShoppingCarElement({
     <article className="relative flex items-center bg-white gap-2 h-40 shadow-[0_8px_30px_rgb(0,0,0,0.12)] pl-1">
       <img
         src={image}
-        alt={element}
+        alt={name}
         className="h-32 w-36 aspect-[300/400] object-cover"
       />
       <div className="[&>p]:font-Georgia">
-        <p className="font-bold">{element}</p>
+        <p className="font-bold">{name}</p>
         <p>
           <b>Units:</b> {units}
         </p>
@@ -46,7 +46,7 @@ export default function ShoppingCarElement({
         type="button"
         value="X"
         className="absolute right-4 cursor-pointer"
-        onClick={() => handleClickDelete(element)}
+        onClick={() => handleClickDelete(name)}
       />
     </article>
   );

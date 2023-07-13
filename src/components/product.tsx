@@ -1,66 +1,67 @@
 import { useContext } from "react";
 import { ShoppingCarContext } from "../context/shopping-car-context";
 import { motion } from "framer-motion";
-import { IShoppingCar, IElement,TShoppingCar,IProduct } from "../utils/utils.t";
-
+import { IShoppingCar, IProduct } from "../utils/types";
 
 export function getTotal(newCar: IShoppingCar) {
   let newTotal = 0;
 
-  Object.entries(newCar.elements).forEach(
-    ([key, value]: [string, IElement]) => {
-      newTotal += value.price * value.units;
-    }
-  );
+  Object.entries(newCar.elements).forEach((elementSelected) => {
+    const [, value] = elementSelected as [string, IProduct];
+    newTotal += value.price * value.units;
+  });
   return newTotal;
 }
 
-export default function Product({ el, price, handleClickImage, element }) {
-  const { shoppingCar, setShoppingCar }: TShoppingCar =
+export default function Product({ element, price, handleClickImage, elementSelected } : { element : IProduct, price : string, handleClickImage : Function, elementSelected : IProduct | undefined }) {
+  const {
+    shoppingCar,
+    setShoppingCar,
+  }: { shoppingCar: IShoppingCar; setShoppingCar: Function } =
     useContext(ShoppingCarContext);
 
   function handleClickAdd({ name, image, price, units }: IProduct) {
-    const element = shoppingCar!.elements[name];
+    const elementSelected = shoppingCar.elements[name];
 
     let newCar: IShoppingCar;
 
-    if (!element) {
+    if (!elementSelected) {
       const newProduct = { image, price, units: 1 };
       newCar = {
         ...shoppingCar,
-        elements: { ...shoppingCar!.elements, [name]: newProduct },
+        elements: { ...shoppingCar.elements, [name]: newProduct },
       };
     } else {
-      if (units === element.units) return;
+      if (units === elementSelected.units) return;
 
-      const newUnits = element.units + (element.units <= 100 && 1);
+      const newUnits = elementSelected.units + (elementSelected.units <= 100 && 1);
       newCar = {
         ...shoppingCar,
         elements: {
-          ...shoppingCar!.elements,
-          [name]: { ...element, units: newUnits },
+          ...shoppingCar.elements,
+          [name]: { ...elementSelected, units: newUnits },
         },
       };
     }
 
     const newTotal = getTotal(newCar);
 
-    setShoppingCar!({ ...newCar, total: newTotal });
+    setShoppingCar({ ...newCar, total: newTotal });
   }
 
   function handleClickMinus({ name }: IProduct) {
-    const element = shoppingCar!.elements[name];
+    const elementSelected = shoppingCar.elements[name];
 
     let newCar: IShoppingCar;
 
-    if (!element) return;
+    if (!elementSelected) return;
     else {
-      const newUnits = element.units - 1;
+      const newUnits = elementSelected.units - 1;
       newCar = {
         ...shoppingCar,
         elements: {
-          ...shoppingCar!.elements,
-          [name]: { ...element, units: newUnits },
+          ...shoppingCar.elements,
+          [name]: { ...elementSelected, units: newUnits },
         },
       };
       if (newUnits === 0) {
@@ -70,41 +71,41 @@ export default function Product({ el, price, handleClickImage, element }) {
 
     const newTotal = getTotal(newCar);
 
-    setShoppingCar!({ ...newCar, total: newTotal });
+    setShoppingCar({ ...newCar, total: newTotal });
   }
 
   return (
     <motion.article
       className={`h-auto w-auto object-cover hover:scale-105 transition-all duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${
-        element != null && element.name == el.name && "opacity-0"
+        elementSelected != undefined && elementSelected.name == element.name && "opacity-0"
       }`}
     >
       <motion.img
-        layoutId={el._id}
-        src={el.image}
-        alt={el.name}
+        layoutId={element._id}
+        src={element.image}
+        alt={element.name}
         className={`rounded-t-xl h-48 aspect-auto ${
-          (element?.name != el?.name || element == null) && "cursor-pointer"
+          (elementSelected?.name != element?.name || elementSelected == undefined) && "cursor-pointer"
         }`}
         onClick={() =>
-          (element?.name != el?.name || element == null) && handleClickImage(el)
+          (elementSelected?.name != element?.name || elementSelected == undefined) && handleClickImage(element)
         }
       />
       <motion.section className="h-20 bg-slate-50 border-t-2 p-1 relative">
-        <motion.p>{el.name}</motion.p>
+        <motion.p>{element.name}</motion.p>
         <motion.p>{price}</motion.p>
-        <motion.p>{el.units === 0 ? "Agotado" : el.units}</motion.p>
+        <motion.p>{element.units === 0 ? "Agotado" : element.units}</motion.p>
         <motion.img
           src="/icons/minus-icon.png"
           alt="plus"
           className="h-5 absolute right-8 bottom-2 bg-slate-500 p-1 rounded-[50%] cursor-pointer active:scale-90"
-          onClick={() => handleClickMinus(el)}
+          onClick={() => handleClickMinus(element)}
         />
         <motion.img
           src="/icons/add-icon.png"
           alt="plus"
           className="h-5 absolute right-2 bottom-2 bg-slate-500 p-1 rounded-[50%] cursor-pointer active:scale-90"
-          onClick={() => handleClickAdd(el)}
+          onClick={() => handleClickAdd(element)}
         />
       </motion.section>
     </motion.article>

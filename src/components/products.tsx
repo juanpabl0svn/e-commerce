@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import Product, { IElement, IProduct } from "./product";
+import {AnimatePresence, motion } from "framer-motion";
 
 export default function Products({ URL }) {
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
 
   const [element, setElement]: [IElement | null, Function] = useState(null);
 
-  function handleClick() {
-    setElement(null);
-  }
 
   function handleClickImage(el) {
-    setElement(el);
+    if(element === null){
+      setElement(el)
+      return
+    } 
+    setElement(null);
+    setTimeout(()=> setElement(el),500)
   }
 
   useEffect(() => {
@@ -44,31 +47,38 @@ export default function Products({ URL }) {
             );
           })}
       </article>
-      {element != null && (
-        <article className="fixed  bg-slate-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-3/4 p-14 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg min-w-[400px] max-w-[900px] z-20">
-            <input
+      <AnimatePresence>
+        {element != null && (
+          <motion.article layoutId={element._id} className="fixed top-[10vh]  bg-slate-100 h-3/4 w-3/4 p-14 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg min-w-[400px] max-w-[900px] z-20">
+            <motion.input
               type="button"
               value="X"
               className="absolute right-6 top-4 cursor-pointer"
-              onClick={handleClick}
+              onClick={()=> setElement(null)}
             />
 
-          <section className="overflow-y-scroll h-full">
-            <img onClick={()=> location.href = `/products/${element._id}`} src={element.image} className={`rounded-md view-transition-name:image-${element._id}`} alt={element._id} />
-            <p className="">{element.name}</p>
-            <p className="">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Temporibus distinctio delectus laborum laboriosam quibusdam. Quas
-              porro nam cupiditate blanditiis! Voluptatem doloribus magnam
-              eligendi ab perspiciatis fuga? In eius quos mollitia! Lorem ipsum
-              dolor, sit amet consectetur adipisicing elit. Fugiat sint libero
-              ea dignissimos, necessitatibus eius tenetur itaque, dolor,
-              recusandae ratione quidem inventore culpa nihil suscipit alias
-              excepturi at. Quia, consequatur.
-            </p>
-          </section>
-        </article>
-      )}
+            <motion.section className="overflow-y-scroll h-full">
+              <motion.img
+                onClick={() => (location.href = `/products/${element._id}`)}
+                src={element.image}
+                className={`rounded-md view-transition-name:image-${element._id}`}
+                alt={element._id}
+              />
+              <motion.p className="">{element.name}</motion.p>
+              <motion.p className="">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Temporibus distinctio delectus laborum laboriosam quibusdam.
+                Quas porro nam cupiditate blanditiis! Voluptatem doloribus
+                magnam eligendi ab perspiciatis fuga? In eius quos mollitia!
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat
+                sint libero ea dignissimos, necessitatibus eius tenetur itaque,
+                dolor, recusandae ratione quidem inventore culpa nihil suscipit
+                alias excepturi at. Quia, consequatur.
+              </motion.p>
+            </motion.section>
+          </motion.article>
+        )}
+      </AnimatePresence>
     </>
   );
 }

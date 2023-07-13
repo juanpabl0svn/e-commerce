@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProduct } from "./product";
+import { IProduct } from "../utils/utils.t";
+import {motion} from 'framer-motion'
 
 const ProductInfo = ({ URL }) => {
   const { id } = useParams();
 
   const navigate = useNavigate();
 
-  const [product, setProduct]:[IProduct | null ,Function] = useState(null);
+  const [product, setProduct]: [IProduct | null, Function] = useState(null);
 
   useEffect(() => {
     async function getProduct() {
@@ -18,22 +19,27 @@ const ProductInfo = ({ URL }) => {
     getProduct();
   }, []);
 
-  function handleClickNavigate(event) {
+  function handleClickNavigate() {
     navigate(`/`);
   }
 
   return (
-    <div className="flex bg-slate-500">
-      {product != null && (
-        <>
-          <img
-            className={`view-transition-name:image-${id}`}
-            src={product .image}
-          />
-        </>
-      )}
-      <button onClick={handleClickNavigate}>Volver</button>
-    </div>
+    <motion.article className="w-3/4 grid place-content-center bg-slate-500">
+      <div className="flex bg-white w-full flex-col">
+        {product != null && (
+          <>
+            <img
+              className={`view-transition-name:image-${id}`}
+              src={product.image}
+            />
+            <p>{product.name}</p>
+            <p>{product.price}</p>
+          </>
+        )}
+
+        <button onClick={handleClickNavigate}>Volver</button>
+      </div>
+    </motion.article>
   );
 };
 

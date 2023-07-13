@@ -1,20 +1,15 @@
-import replaceWithUppercase from '../utils/text'
+import replaceWithUppercase from "../utils/text";
 
 export default function CreateAccount({ URL }) {
-
-  function checkData(data){
-
-    console.log(data)
-    return false
-
+  function checkData(data) {
+    console.log(data);
+    return false;
   }
-
-
 
   async function handleSubmit(e) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
-    console.log(data)
+    console.log(data);
 
     if (data.password !== data["repeat-password"]) {
       alert("Passwords do not match");
@@ -34,14 +29,12 @@ export default function CreateAccount({ URL }) {
       body: JSON.stringify(data),
     });
 
-    console.log(req.status)
-    if(req.status === 403){
+    console.log(req.status);
+    if (req.status === 403) {
       alert("User already exists, pick another");
-      return
+      return;
     }
     const res = await req.json();
-
-
   }
 
   function handleChange(event) {

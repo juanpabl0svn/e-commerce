@@ -9,6 +9,10 @@ export default function Carrousel() {
     speed: 500,
     slidesToShow: 1,
     adaptiveHeight: true,
+    autoplay: true,
+    autoplaySpeed: 3500,
+    pauseOnHover: true,
+    pauseOnFocus: true,
   };
 
   return (

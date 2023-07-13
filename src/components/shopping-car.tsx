@@ -4,8 +4,6 @@ import ShoppingCarElement from "./shopping-car-element";
 import { TShoppingCar } from "./product";
 
 
-
-
 export default function CarShopScreen() {
 
   const { shoppingCar, setShoppingCar }:TShoppingCar = useContext(ShoppingCarContext);
@@ -56,7 +54,7 @@ export default function CarShopScreen() {
         }
       />
       <h1 className="absolute right-20 bottom-6 font-bold text-xl">
-        Total:{" "}
+        Total:
         {shoppingCar!.total!.toLocaleString("en", {
           style: "currency",
           currency: "USD",

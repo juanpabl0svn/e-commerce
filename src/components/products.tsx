@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Product, { IElement, IProduct } from "./product";
+import Product from "./product";
+import { IElement,IProduct } from "../utils/utils.t";
 import {AnimatePresence, motion } from "framer-motion";
 
 export default function Products({ URL }) {
@@ -8,7 +9,7 @@ export default function Products({ URL }) {
   const [element, setElement]: [IElement | null, Function] = useState(null);
 
 
-  function handleClickImage(el) {
+  function handleClickImage(el:IElement) {
     if(element === null){
       setElement(el)
       return
@@ -23,6 +24,11 @@ export default function Products({ URL }) {
       const res = await req.json();
       setProducts(res);
     };
+    document.addEventListener('keydown',(e) => {
+      if(e.keyCode === 27 && element !== null){
+        setElement(null)
+      }
+    })
     getProducts();
   }, []);
 
@@ -61,7 +67,7 @@ export default function Products({ URL }) {
               <motion.img
                 onClick={() => (location.href = `/products/${element._id}`)}
                 src={element.image}
-                className={`rounded-md view-transition-name:image-${element._id}`}
+                className='rounded-md cursor-pointer'
                 alt={element._id}
               />
               <motion.p className="">{element.name}</motion.p>

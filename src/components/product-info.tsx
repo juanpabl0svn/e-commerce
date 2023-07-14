@@ -23,6 +23,8 @@ const ProductInfo = ({ URL }) => {
     navigate(`/`);
   }
 
+  if (!product) return
+
   return (
     <motion.article className="w-3/4 grid place-content-center bg-slate-500">
       <div className="flex bg-white w-full flex-col">

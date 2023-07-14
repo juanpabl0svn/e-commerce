@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { ShoppingCarContext } from "../context/shopping-car-context";
+import { useContextApp } from "../context/shopping-car-context";
 import { motion } from "framer-motion";
 import { IShoppingCar, IProduct } from "../utils/types";
 
@@ -13,71 +12,23 @@ export function getTotal(newCar: IShoppingCar) {
   return newTotal;
 }
 
-export default function Product({ element, price, handleClickImage, elementSelected } : { element : IProduct, price : string, handleClickImage : Function, elementSelected : IProduct | undefined }) {
-  const {
-    shoppingCar,
-    setShoppingCar,
-  }: { shoppingCar: IShoppingCar; setShoppingCar: Function } =
-    useContext(ShoppingCarContext);
-
-  function handleClickAdd({ name, image, price, units }: IProduct) {
-    const elementSelected = shoppingCar.elements[name];
-
-    let newCar: IShoppingCar;
-
-    if (!elementSelected) {
-      const newProduct = { image, price, units: 1 };
-      newCar = {
-        ...shoppingCar,
-        elements: { ...shoppingCar.elements, [name]: newProduct },
-      };
-    } else {
-      if (units === elementSelected.units) return;
-
-      const newUnits = elementSelected.units + (elementSelected.units <= 100 && 1);
-      newCar = {
-        ...shoppingCar,
-        elements: {
-          ...shoppingCar.elements,
-          [name]: { ...elementSelected, units: newUnits },
-        },
-      };
-    }
-
-    const newTotal = getTotal(newCar);
-
-    setShoppingCar({ ...newCar, total: newTotal });
-  }
-
-  function handleClickMinus({ name }: IProduct) {
-    const elementSelected = shoppingCar.elements[name];
-
-    let newCar: IShoppingCar;
-
-    if (!elementSelected) return;
-    else {
-      const newUnits = elementSelected.units - 1;
-      newCar = {
-        ...shoppingCar,
-        elements: {
-          ...shoppingCar.elements,
-          [name]: { ...elementSelected, units: newUnits },
-        },
-      };
-      if (newUnits === 0) {
-        delete newCar.elements[name];
-      }
-    }
-
-    const newTotal = getTotal(newCar);
-
-    setShoppingCar({ ...newCar, total: newTotal });
-  }
+export default function Product({
+  element,
+  price,
+  handleClickImage,
+}: {
+  element: IProduct;
+  price: string;
+  handleClickImage: Function;
+}) {
+  const { handleClickAdd, handleClickMinus ,elementSelected}  = useContextApp();
 
   return (
     <motion.article
       className={`h-auto w-auto object-cover hover:scale-105 transition-all duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${
-        elementSelected != undefined && elementSelected.name == element.name && "opacity-0"
+        elementSelected != undefined &&
+        elementSelected.name == element.name &&
+        "opacity-0"
       }`}
     >
       <motion.img
@@ -85,10 +36,14 @@ export default function Product({ element, price, handleClickImage, elementSelec
         src={element.image}
         alt={element.name}
         className={`rounded-t-xl h-48 aspect-auto ${
-          (elementSelected?.name != element?.name || elementSelected == undefined) && "cursor-pointer"
+          (elementSelected?.name != element?.name ||
+            elementSelected == undefined) &&
+          "cursor-pointer"
         }`}
         onClick={() =>
-          (elementSelected?.name != element?.name || elementSelected == undefined) && handleClickImage(element)
+          (elementSelected?.name != element?.name ||
+            elementSelected == undefined) &&
+          handleClickImage(element)
         }
       />
       <motion.section className="h-20 bg-slate-50 border-t-2 p-1 relative">

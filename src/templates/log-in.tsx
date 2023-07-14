@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import replaceWithUppercase from "../utils/text";
 
 function useData() {
   const [data, setData] = useState("");
@@ -57,8 +58,11 @@ export default function LogIn({ URL }) {
               type="text"
               id="username"
               name="username"
-              className="px-10 h-10 rounded-3xl outline-none"
+              className="px-10 h-10 rounded-3xl outline-none uppercase"
               autoComplete="username"
+
+              onKeyUp={replaceWithUppercase}
+              
             />
             <span className="absolute left-3">
               <img src="/icons/user.png" alt="" className="h-5" />

@@ -1,26 +1,16 @@
-import { getTotal } from "./product";
-import { IShoppingCar } from "../utils/types";
-
 export default function ShoppingCarElement({
   name,
   image,
   units,
   price,
-  context,
+  handleClickDelete,
 }: {
   name: string;
   image: string;
   units: number;
   price: number;
-  context: Array<IShoppingCar | Function>;
+  handleClickDelete : Function
 }) {
-  const [shoppingCar, setShoppingCar] = context as [IShoppingCar, Function];
-
-  function handleClickDelete(key: string) {
-    const newCarShop: IShoppingCar = { ...shoppingCar };
-    delete newCarShop.elements[key];
-    setShoppingCar({ ...newCarShop, total: getTotal(newCarShop) });
-  }
 
   return (
     <article className="relative flex items-center bg-white gap-2 h-40 shadow-[0_8px_30px_rgb(0,0,0,0.12)] pl-1">

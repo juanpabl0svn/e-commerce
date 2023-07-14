@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
 import CarShopScreen from "../components/shopping-car";
-import { useState } from "react";
+import { useContextApp } from "../context/shopping-car-context";
 
 export default function Header() {
-  const [visible, setVisible] = useState(false);
-  function handleClick() {
-    setVisible(!visible);
-  }
+
+  const {shoppingCarVisibility,handleVisibility} = useContextApp()
   return (
     <>
       <header className="text-white bg-slate-600 p-6 w-full relative flex justify-between pr-20">
@@ -19,16 +17,17 @@ export default function Header() {
         </div>
         <motion.img
           layoutId="carshop"
+          whileHover={{scale: 1.07}}
           src="/icons/shopping-car.png"
           alt="shopping-car"
-          className={`h-12 absolute top-3 right-3 hover:-rotate-12 cursor-pointer transition-all duration-200 bg-white rounded-[50%] p-2 ${
-            visible && "hidden"
+          className={`h-12 absolute top-3 right-3 cursor-pointer transition-all duration-200 bg-white rounded-[50%] p-2 ${
+            shoppingCarVisibility && "hidden"
           }`}
-          onClick={handleClick}
+          onClick={handleVisibility}
           transition={{ duration: 0.017 }}
         />
       </header>
-      {visible && <CarShopScreen visible={visible} handleClick={handleClick} />}
+      {shoppingCarVisibility && <CarShopScreen handleClick={handleVisibility} />}
     </>
   );
 }

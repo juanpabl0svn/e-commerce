@@ -1,15 +1,14 @@
-import { useContext } from "react";
-import { ShoppingCarContext } from "../context/shopping-car-context";
+import { useContextApp } from "../context/shopping-car-context";
 import ShoppingCarElement from "./shopping-car-element";
 import { motion, AnimatePresence } from "framer-motion";
-import { type IProduct, type IShoppingCar } from "../utils/types";
+import { type IProduct } from "../utils/types";
 
-export default function CarShopScreen({ visible, handleClick }) {
+export default function CarShopScreen({handleClick }) {
   const {
     shoppingCar,
-    setShoppingCar,
-  }: { shoppingCar: IShoppingCar; setShoppingCar: Function } =
-    useContext(ShoppingCarContext);
+    handleClickDelete
+  } =
+    useContextApp();
 
   const carShopElements: Array<Array<string | IProduct>> = Object.entries(
     shoppingCar.elements
@@ -42,7 +41,7 @@ export default function CarShopScreen({ visible, handleClick }) {
                   image={value.image}
                   price={value.price}
                   units={value.units}
-                  context={[shoppingCar,setShoppingCar]}
+                  handleClickDelete={handleClickDelete}
                 />
               );
             })

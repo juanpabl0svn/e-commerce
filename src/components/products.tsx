@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useContextApp } from "../context/shopping-car-context";
 import Product from "./product";
 import {AnimatePresence, motion } from "framer-motion";
 import { IProduct } from "../utils/types";
@@ -7,17 +8,9 @@ export default function Products({ URL }) {
   
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
 
-  const [elementSelected, setElementSelected]: [IProduct | undefined , Function] = useState();
 
+  const { elementSelected, handleClickImage, handleVisibilityElement } = useContextApp();
 
-  function handleClickImage(element:IProduct) {
-    if(elementSelected === undefined){
-      setElementSelected(element)
-      return
-    } 
-    setElementSelected();
-    setTimeout(()=> setElementSelected(element),500)
-  }
 
   useEffect(() => {
     const getProducts = async () => {
@@ -27,7 +20,7 @@ export default function Products({ URL }) {
     };
     document.addEventListener('keydown',(e) => {
       if(e.keyCode === 27 && elementSelected !== undefined) {
-        setElementSelected();
+        handleVisibilityElement();
       }
     })
     getProducts();
@@ -63,7 +56,7 @@ export default function Products({ URL }) {
               type="button"
               value="X"
               className="absolute right-6 top-4 cursor-pointer"
-              onClick={()=> setElementSelected()}
+              onClick={handleVisibilityElement}
             />
 
             <motion.section className="overflow-y-scroll h-full grid place-items-center">

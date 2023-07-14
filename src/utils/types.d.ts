@@ -1,5 +1,15 @@
 export interface Comments {}
 
+export interface IShoppingCar {
+  elements: Object<string, Product>;
+  total: number;
+}
+export interface Context {
+  shoppingCar: IShopping;
+  elementSelected: T;
+  shoppingCarVisibility: boolean;
+}
+
 export interface IProduct {
   _id: string;
   name: string;
@@ -10,8 +20,20 @@ export interface IProduct {
   comments: Array<>;
 }
 
-export interface IShoppingCar{
-  elements: Object<string,Product>
-  total: number
-}
-
+export type Action =
+  | {
+      type: "add-to-cart";
+      payload: IShoppingCar;
+    }
+  | {
+      type: "delete";
+      payload: IShoppingCar;
+    }
+  | {
+      type: "subtract-to-cart";
+      payload: IShoppingCar;
+    }
+  | {
+      type: "set-visibility";
+    }
+  | { type: "select"; payload: IShoppingCar };

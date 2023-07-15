@@ -15,13 +15,11 @@ export function getTotal(newCar: IShoppingCar) {
 export default function Product({
   element,
   price,
-  handleClickImage,
 }: {
   element: IProduct;
   price: string;
-  handleClickImage: Function;
 }) {
-  const { handleClickAdd, handleClickMinus ,elementSelected}  = useContextApp();
+  const { handleClickAdd, handleClickMinus ,elementSelected,handleClickImage}  = useContextApp();
 
   return (
     <motion.article

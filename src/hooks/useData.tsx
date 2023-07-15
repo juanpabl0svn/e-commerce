@@ -32,6 +32,14 @@ function reducer(state: Context, action: Action) {
     }
   }
 
+  if (type === 'clean'){
+    return{
+      ...state,
+      elementSelected : undefined,
+      shoppingCarVisibility: false
+    }
+  }
+
   return state;
 }
 
@@ -146,6 +154,10 @@ const useData = () => {
     });;
   }
 
+  function handleClickClean(){
+    dispatch({ type: "clean" });
+  }
+
   return {
     shoppingCar,
     elementSelected,
@@ -155,7 +167,8 @@ const useData = () => {
     handleClickImage,
     handleVisibility,
     handleClickDelete,
-    handleVisibilityElement
+    handleVisibilityElement,
+    handleClickClean
   };
 };
 

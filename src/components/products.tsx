@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useContextApp } from "../context/shopping-car-context";
 import Product from "./product";
-import {AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { IProduct } from "../utils/types";
+import { useNavigate } from "react-router-dom";
 
 export default function Products({ URL }) {
-  
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
 
+  const { elementSelected, handleVisibilityElement } =
+    useContextApp();
 
-  const { elementSelected, handleClickImage, handleVisibilityElement } = useContextApp();
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -18,11 +19,11 @@ export default function Products({ URL }) {
       const res = await req.json();
       setProducts(res);
     };
-    document.addEventListener('keydown',(e) => {
-      if(e.keyCode === 27 && elementSelected !== undefined) {
+    document.addEventListener("keydown", (e) => {
+      if (e.keyCode === 27 && elementSelected !== undefined) {
         handleVisibilityElement();
       }
-    })
+    });
     getProducts();
   }, []);
 
@@ -36,22 +37,16 @@ export default function Products({ URL }) {
               style: "currency",
               currency: "USD",
             });
-            return (
-              <Product
-                key={index}
-                element={element}
-                price={price}
-                handleClickImage={handleClickImage}
-                elementSelected={elementSelected}
-              />
-            );
+            return <Product key={index} element={element} price={price} />;
           })}
       </article>
       <AnimatePresence>
         {elementSelected != undefined && (
-          <motion.article layoutId={elementSelected._id} 
-          transition={{duration : .5}}
-          className="fixed top-[10vh]  bg-slate-100 h-3/4 w-3/4 p-14 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg min-w-[400px] max-w-[900px] z-20">
+          <motion.article
+            layoutId={elementSelected._id}
+            transition={{ duration: 0.5 }}
+            className="fixed top-[10vh]  bg-slate-100 h-3/4 w-3/4 p-14 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg min-w-[400px] max-w-[900px] z-20"
+          >
             <motion.input
               type="button"
               value="X"
@@ -61,15 +56,13 @@ export default function Products({ URL }) {
 
             <motion.section className="overflow-y-scroll h-full grid place-items-center">
               <motion.img
-                onClick={() => (location.href = `/products/${elementSelected._id}`)}
+                onClick={() => navigate(`/products/${elementSelected._id}`)}
                 src={elementSelected.image}
-                className='rounded-md cursor-pointer'
+                className="rounded-md cursor-pointer"
                 alt={elementSelected._id}
               />
               <motion.p className="">{elementSelected.name}</motion.p>
-              <motion.p className="">
-                {elementSelected.description}
-              </motion.p>
+              <motion.p className="">{elementSelected.description}</motion.p>
             </motion.section>
           </motion.article>
         )}

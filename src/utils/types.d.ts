@@ -36,4 +36,6 @@ export type Action =
   | {
       type: "set-visibility";
     }
-  | { type: "select"; payload: IShoppingCar };
+  | { type: "set-visibility-element" }
+  | { type: "select"; payload: IShoppingCar }
+  | { type: "clean" };

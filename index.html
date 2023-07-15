@@ -12,22 +12,5 @@
       class="w-full h-full flex items-center flex-col min-h-screen bg-slate-50"
     ></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      window.navigation.addEventListener("navigate", (event) => {
-        const toUrl = new URL(event.destination.url);
-        if (location.origin !== toUrl.origin) return;
-        event.intercept({
-          handler() {
-            document.startViewTransition(async() => {
-              const req = await fetch(toUrl.pathname);
-              const res = await req.text();
-              const [, data] = res.match(/<root[^>]*>([\s\S]*)<\/root/i);
-              return
-              document.documentElement.innerHTML = data;
-            });
-          },
-        });
-      });
-    </script>
   </body>
 </html>

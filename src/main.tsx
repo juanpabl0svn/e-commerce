@@ -9,6 +9,7 @@ import ProductInfo from "./components/product-info";
 import Carrousel from "./components/carrousel";
 import LogIn from "./templates/log-in";
 import CreateAccount from "./templates/create-account";
+import Loading from "./components/loading";
 
 const URL = "http://localhost:3000";
 
@@ -39,15 +40,16 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/loading",
+    element: <Loading />,
+  },
+  {
     path: "/*",
     element: <Errror404 />,
   },
 ]);
 
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  
-
   <ShoppingCar>
     <RouterProvider router={router} />
   </ShoppingCar>

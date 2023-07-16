@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import replaceWithUppercase from "../utils/text";
-
-function useData() {
-  const [data, setData] = useState("");
-
-  function setDataValue(event): [string, Function] | undefined {
-    const value = event.target.value;
-    if (value.startsWith(" ")) return;
-    setData(value);
-  }
-
-  return [data, setDataValue];
-}
+import { setUser } from "../utils/local-storage";
 
 export default function LogIn({ URL }) {
   const [seePassword, setSeePassword] = useState(false);
@@ -40,6 +29,10 @@ export default function LogIn({ URL }) {
       console.log("Error");
       return;
     }
+    const res = await req.json();
+
+    setUser(res)
+
     navigate("/");
   }
 

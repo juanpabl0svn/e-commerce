@@ -186,6 +186,10 @@ const useData = () => {
     dispatch({ type: "log-in" })
   }
 
+  function logOut(){
+    dispatch({ type: "log-out" })
+  }
+
   return {
     shoppingCar,
     elementSelected,

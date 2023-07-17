@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IProduct } from "../utils/types";
 import { motion } from "framer-motion";
+import fetchBackend from "../utils/operations";
 
-const ProductInfo = ({ URL }) => {
+const ProductInfo = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -22,12 +23,11 @@ const ProductInfo = ({ URL }) => {
   };
 
   useEffect(() => {
-    async function getProduct() {
-      const req = await fetch(`${URL}/products/${id}`);
-      const res = await req.json();
-      setProduct(res);
-    }
-    getProduct();
+
+    fetchBackend({
+      pathname: `/products/${id}`,
+      handleFunction: setProduct,
+    })
   }, []);
 
   function handleClickNavigate() {

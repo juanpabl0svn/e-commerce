@@ -1,13 +1,21 @@
 export interface Comments {}
 
+export interface User{
+  username: string;
+  token: string; 
+}
+
+
 export interface IShoppingCar {
   elements: Object<string, Product>;
   total: number;
 }
+
 export interface Context {
   shoppingCar: IShopping;
   elementSelected: T;
   shoppingCarVisibility: boolean;
+  user : User | undefined;
 }
 
 export interface IProduct {
@@ -38,4 +46,6 @@ export type Action =
     }
   | { type: "set-visibility-element" }
   | { type: "select"; payload: IShoppingCar }
-  | { type: "clean" };
+  | { type: "clean" }
+  | {type: 'log-in', payload: User}
+  | {type: 'log-out'}

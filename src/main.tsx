@@ -1,10 +1,8 @@
 import ReactDOM from "react-dom/client";
-import App from "./templates/App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ShoppingCar from "./context/shopping-car-context";
 import Errror404 from "./templates/errror404";
-import ProductInfo from "./components/product-info";
 import LogIn from "./templates/log-in";
 import CreateAccount from "./templates/create-account";
 import Loading from "./components/loading";
@@ -16,20 +14,20 @@ const URL = "http://localhost:3000";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landing URL={URL}/>,
+    element: <Landing/>,
   },
   {
     path: "/login",
-    element: <LogIn URL={URL} />,
+    element: <LogIn />,
   },
   {
     path: "/account",
-    element: <CreateAccount URL={URL} />,
+    element: <CreateAccount />,
   },
   {
     path: "/products/:id",
     element: (
-      <ProductScreen URL={URL}/>
+      <ProductScreen/>
     ),
   },
   {

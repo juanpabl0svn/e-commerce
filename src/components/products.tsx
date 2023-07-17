@@ -4,8 +4,9 @@ import Product from "./product";
 import { AnimatePresence, motion } from "framer-motion";
 import { IProduct } from "../utils/types";
 import { useNavigate } from "react-router-dom";
+import fetchBackend from "../utils/operations";
 
-export default function Products({ URL }) {
+export default function Products() {
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
 
   const { elementSelected, handleVisibilityElement } =
@@ -14,17 +15,16 @@ export default function Products({ URL }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getProducts = async () => {
-      const req = await fetch(URL);
-      const res = await req.json();
-      setProducts(res);
-    };
+    
+    fetchBackend({
+      pathname: '',
+      handleFunction: setProducts
+    })
     document.addEventListener("keydown", (e) => {
       if (e.keyCode === 27 && elementSelected !== undefined) {
         handleVisibilityElement();
       }
     });
-    getProducts();
   }, []);
 
   return (

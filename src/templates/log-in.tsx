@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import replaceWithUppercase from "../utils/text";
 import { setUser } from "../utils/local-storage";
+import fetchBackend from "../utils/operations";
 
-export default function LogIn({ URL }) {
+export default function LogIn() {
   const [seePassword, setSeePassword] = useState(false);
 
   const navigate = useNavigate();
@@ -17,21 +18,24 @@ export default function LogIn({ URL }) {
 
     const data = Object.fromEntries(new FormData(e.target));
 
-    const req = await fetch(URL + "/user", {
+    const headers = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }
 
-    if (req.status === 204) {
-      console.log("Error");
+    const req = await fetchBackend({
+      pathname: '/user',
+      headers,
+      handleFunction: setUser
+    })
+
+    if (!req) {
+      alert('error')
       return;
     }
-    const res = await req.json();
-
-    setUser(res)
 
     navigate("/");
   }

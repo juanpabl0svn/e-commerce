@@ -1,10 +1,19 @@
 import { useReducer } from "react";
-import { type IShoppingCar, type IProduct , type Context, Action} from "../utils/types";
+import {
+  type IShoppingCar,
+  type IProduct,
+  type Context,
+  Action,
+} from "../utils/types";
 
 function reducer(state: Context, action: Action) {
   const { type } = action;
 
-  if (type === "add-to-cart" || type === "delete" || type === 'subtract-to-cart') {
+  if (
+    type === "add-to-cart" ||
+    type === "delete" ||
+    type === "subtract-to-cart"
+  ) {
     return {
       ...state,
       shoppingCar: action.payload,
@@ -25,19 +34,32 @@ function reducer(state: Context, action: Action) {
     };
   }
 
-  if (type === 'set-visibility-element'){
+  if (type === "set-visibility-element") {
     return {
       ...state,
-      elementSelected : undefined
-    }
+      elementSelected: undefined,
+    };
   }
 
-  if (type === 'clean'){
-    return{
+  if (type === "clean") {
+    return {
       ...state,
-      elementSelected : undefined,
-      shoppingCarVisibility: false
-    }
+      elementSelected: undefined,
+      shoppingCarVisibility: false,
+    };
+  }
+
+  if (type === "log-in") {
+    return {
+      ...state,
+      user: action.payload,
+    };
+  }
+  if (type === "log-out") {
+    return {
+      ...state,
+      user: undefined,
+    };
   }
 
   return state;
@@ -61,10 +83,13 @@ const useData = () => {
     },
     elementSelected: undefined,
     shoppingCarVisibility: false,
+    user: undefined,
   };
 
-  const [{ shoppingCar, elementSelected, shoppingCarVisibility }, dispatch] : [Context, Function] =
-    useReducer(reducer, firstValue);
+  const [{ shoppingCar, elementSelected, shoppingCarVisibility }, dispatch]: [
+    Context,
+    Function
+  ] = useReducer(reducer, firstValue);
 
   function handleClickAdd({ name, image, price, units }: IProduct) {
     const elementSelected = shoppingCar.elements[name];
@@ -94,7 +119,6 @@ const useData = () => {
     const newTotal = getTotal(newCar);
 
     dispatch({ type: "add-to-cart", payload: { ...newCar, total: newTotal } });
-
   }
 
   function handleClickMinus({ name }: IProduct) {
@@ -124,23 +148,23 @@ const useData = () => {
   }
 
   function handleClickImage(element: IProduct) {
-    if(shoppingCarVisibility) handleVisibility()
-    
+    if (shoppingCarVisibility) handleVisibility();
+
     if (elementSelected === undefined) {
       dispatch({ type: "select", payload: element });
       return;
     }
-    handleVisibilityElement()
+    handleVisibilityElement();
     setTimeout(() => dispatch({ type: "select", payload: element }), 500);
   }
 
   function handleVisibility() {
-    if (elementSelected !== undefined) handleVisibilityElement() 
+    if (elementSelected !== undefined) handleVisibilityElement();
     dispatch({ type: "set-visibility" });
   }
 
-  function handleVisibilityElement(){
-    if (shoppingCarVisibility) handleVisibility()
+  function handleVisibilityElement() {
+    if (shoppingCarVisibility) handleVisibility();
     dispatch({ type: "set-visibility-element" });
   }
 
@@ -151,11 +175,15 @@ const useData = () => {
     dispatch({
       type: "delete",
       payload: { ...newCar, total: newTotal },
-    });;
+    });
   }
 
-  function handleClickClean(){
+  function handleClickClean() {
     dispatch({ type: "clean" });
+  }
+
+  function logIn(){
+    dispatch({ type: "log-in" })
   }
 
   return {
@@ -168,7 +196,7 @@ const useData = () => {
     handleVisibility,
     handleClickDelete,
     handleVisibilityElement,
-    handleClickClean
+    handleClickClean,
   };
 };
 

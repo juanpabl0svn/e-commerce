@@ -1,6 +1,7 @@
 import replaceWithUppercase from "../utils/text";
+import fetchBackend from "../utils/operations";
 
-export default function CreateAccount({ URL }) {
+export default function CreateAccount() {
   function checkData(data) {
     console.log(data);
     return false;
@@ -21,20 +22,22 @@ export default function CreateAccount({ URL }) {
     //   return
     // }
 
-    const req = await fetch(URL + "/account", {
+    const headers = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+      }
+    }
 
-    console.log(req.status);
-    if (req.status === 403) {
+    const req = await fetchBackend({
+      pathname: '/account',
+      headers,
+    })
+
+    if (!req) {
       alert("User already exists, pick another");
       return;
     }
-    const res = await req.json();
   }
 
   function handleChange(event) {

@@ -1,7 +1,19 @@
 import replaceWithUppercase from "../utils/text";
 import fetchBackend from "../utils/operations";
+import { useContextApp } from "../context/shopping-car-context";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateAccount() {
+
+  const {user} = useContextApp();
+  const navigate = useNavigate();
+
+
+  if (user != null || user != undefined){
+    navigate("/");
+    return
+  }
+
   function checkData(data) {
     console.log(data);
     return false;
@@ -22,16 +34,17 @@ export default function CreateAccount() {
     //   return
     // }
 
-    const headers = {
+    const request = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+      body : JSON.stringify(data)
     }
 
     const req = await fetchBackend({
       pathname: '/account',
-      headers,
+      request,
     })
 
     if (!req) {

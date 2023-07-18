@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IProduct } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import fetchBackend from "../utils/operations";
+import Rating from "./rating";
+
 
 export default function Products() {
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
@@ -63,6 +65,8 @@ export default function Products() {
               />
               <motion.p className="">{elementSelected.name}</motion.p>
               <motion.p className="">{elementSelected.description}</motion.p>
+              <Rating rating={3} />
+              
             </motion.section>
           </motion.article>
         )}

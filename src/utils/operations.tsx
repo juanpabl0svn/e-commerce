@@ -1,25 +1,30 @@
 export default async function fetchBackend({
   pathname,
-  headers,
+  request,
   handleFunction,
 }: {
   pathname: string;
-  headers?: RequestInit | undefined;
+  request?: RequestInit | undefined;
   handleFunction?: Function | undefined;
 }) {
   const URL = "http://localhost:3000";
 
-  const request = await fetch(URL + pathname, headers);
+  const response = await fetch(URL + pathname, request);
 
-  if (request.status !== 200){
+
+  if (response.status !== 200){
     return 
   }
 
-  const response = await request.json();
+  const data = await response.json();
+
 
   if (handleFunction) {
-    handleFunction(response);
+    handleFunction(data);
   }
 
-  return response;
+return new Promise((resolve, reject) => {
+  resolve(data);
+  reject(data);
+})
 }

@@ -11,4 +11,6 @@
 
 <a href="https://www.flaticon.com/free-icons/login" title="login icons">Login icons created by mavadee - Flaticon</a>
 
+<a href="https://www.flaticon.es/iconos-gratis/estrella" title="estrella iconos">Estrella iconos creados por Freepik - Flaticon</a>
 
+<a href="https://www.flaticon.es/iconos-gratis/estrella" title="estrella iconos">Estrella iconos creados por Gregor Cresnar - Flaticon</a>

@@ -3,11 +3,18 @@ import { useNavigate } from "react-router-dom";
 import replaceWithUppercase from "../utils/text";
 import { setUser } from "../utils/local-storage";
 import fetchBackend from "../utils/operations";
+import { useContextApp } from "../context/shopping-car-context";
+import { User } from "../utils/types";
 
 export default function LogIn() {
-  const [seePassword, setSeePassword] = useState(false);
+  const { user, logIn } = useContextApp();
 
   const navigate = useNavigate();
+  if (user != null || user != undefined) {
+    navigate("/");
+    return;
+  }
+  const [seePassword, setSeePassword] = useState(false);
 
   function handleClick() {
     setSeePassword(!seePassword);
@@ -18,24 +25,26 @@ export default function LogIn() {
 
     const data = Object.fromEntries(new FormData(e.target));
 
-    const headers = {
+    const request = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }
+    };
 
-    const req = await fetchBackend({
-      pathname: '/user',
-      headers,
-      handleFunction: setUser
-    })
+    const req: any = await fetchBackend({
+      pathname: "/user",
+      request,
+      handleFunction: setUser,
+    });
 
     if (!req) {
-      alert('error')
+      alert("error");
       return;
     }
+
+    logIn(req);
 
     navigate("/");
   }
@@ -57,9 +66,7 @@ export default function LogIn() {
               name="username"
               className="px-10 h-10 rounded-3xl outline-none uppercase"
               autoComplete="username"
-
               onKeyUp={replaceWithUppercase}
-              
             />
             <span className="absolute left-3">
               <img src="/icons/user.png" alt="" className="h-5" />

@@ -3,8 +3,10 @@ import {
   type IShoppingCar,
   type IProduct,
   type Context,
-  Action,
+  type Action,
+  type User,
 } from "../utils/types";
+import { deleteUser } from "../utils/local-storage";
 
 function reducer(state: Context, action: Action) {
   const { type } = action;
@@ -56,6 +58,7 @@ function reducer(state: Context, action: Action) {
     };
   }
   if (type === "log-out") {
+    deleteUser()
     return {
       ...state,
       user: undefined,
@@ -86,7 +89,7 @@ const useData = () => {
     user: undefined,
   };
 
-  const [{ shoppingCar, elementSelected, shoppingCarVisibility }, dispatch]: [
+  const [{ shoppingCar, elementSelected, shoppingCarVisibility,user }, dispatch]: [
     Context,
     Function
   ] = useReducer(reducer, firstValue);
@@ -182,8 +185,8 @@ const useData = () => {
     dispatch({ type: "clean" });
   }
 
-  function logIn(){
-    dispatch({ type: "log-in" })
+  function logIn(user: User){
+    dispatch({ type: "log-in", payload: user })
   }
 
   function logOut(){
@@ -201,6 +204,9 @@ const useData = () => {
     handleClickDelete,
     handleVisibilityElement,
     handleClickClean,
+    user,
+    logIn,
+    logOut
   };
 };
 

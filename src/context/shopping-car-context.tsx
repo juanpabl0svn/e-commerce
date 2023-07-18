@@ -1,7 +1,8 @@
 import { ReactNode, createContext, useContext, useEffect } from "react";
-import { IProduct } from "../utils/types";
-
+import { type IProduct, type Context, User } from "../utils/types";
 import useData from "../hooks/useData";
+import getUser from "../utils/local-storage";
+import fetchBackend from "../utils/operations";
 
 export const ShoppingCarContext = createContext({
   shoppingCar: {
@@ -10,12 +11,15 @@ export const ShoppingCarContext = createContext({
   },
   elementSelected: undefined,
   shoppingCarVisibility: false,
+  user: undefined,
   handleClickAdd: (value: IProduct) => {},
   handleClickMinus: (value: IProduct) => {},
   handleClickImage: (value: IProduct) => {},
   handleVisibility: () => {},
   handleClickDelete: (value: string) => {},
   handleVisibilityElement: () => {},
+  logIn:(value:User)=>{},
+  logOut: ()=>{}
 });
 
 export function useContextApp() {
@@ -27,6 +31,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     shoppingCar,
     elementSelected,
     shoppingCarVisibility,
+    user,
     handleClickAdd,
     handleClickMinus,
     handleClickImage,
@@ -34,9 +39,11 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     handleClickDelete,
     handleVisibilityElement,
     handleClickClean,
+    logIn,
+    logOut,
   } = useData();
 
-  useEffect(() => {
+  function controlNavigation() {
     window.navigation.addEventListener("navigate", (event) => {
       handleClickClean();
       const toUrl = new URL(event.destination.url);
@@ -52,6 +59,31 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         },
       });
     });
+  }
+
+  useEffect(() => {
+    controlNavigation();
+    const data = getUser();
+    if (data) {
+      const request = {
+        headers: {
+          "Content-Type": "application/json",
+          token: data.token,
+          username: data.username,
+        },
+      };
+
+      fetchBackend({
+        pathname: "/login",
+        request,
+      }).then((res) => {
+        if (res) {
+          logIn(data);
+        } else {
+          logOut();
+        }
+      });
+    }
   }, []);
 
   return (
@@ -60,12 +92,15 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         shoppingCar,
         elementSelected,
         shoppingCarVisibility,
+        user,
         handleClickAdd,
         handleClickMinus,
         handleClickImage,
         handleVisibility,
         handleClickDelete,
         handleVisibilityElement,
+        logIn,
+        logOut
       }}
     >
       {children}

@@ -19,7 +19,8 @@ export default function Product({
   element: IProduct;
   price: string;
 }) {
-  const { handleClickAdd, handleClickMinus ,elementSelected,handleClickImage}  = useContextApp();
+  const { handleCartElements, elementSelected, handleClickImage, shoppingCar } =
+    useContextApp();
 
   return (
     <motion.article
@@ -48,7 +49,23 @@ export default function Product({
         <motion.p>{element.name}</motion.p>
         <motion.p>{price}</motion.p>
         <motion.p>{element.units === 0 ? "Agotado" : element.units}</motion.p>
-        <motion.img
+        {element.units !== 0 && (<motion.div
+          className={`absolute right-2 bottom-2 flex items-center p-2 rounded-3xl cursor-pointer bg-green-300 ${shoppingCar.elements[element._id] && 'bg-red-500'}`}
+          onClick={() => {
+            handleCartElements(element);
+          }}
+        >
+          <motion.img
+            className="h-6"
+            src="/icons/add-to-cart.png"
+            alt="add cart"
+          />
+          <motion.p>
+            {!shoppingCar.elements[element._id] ? "Add" : "Quit"}
+          </motion.p>
+        </motion.div>)}
+        
+        {/* <motion.img
           src="/icons/minus-icon.png"
           alt="plus"
           className="h-5 absolute right-8 bottom-2 bg-slate-500 p-1 rounded-[50%] cursor-pointer active:scale-90"
@@ -59,7 +76,7 @@ export default function Product({
           alt="plus"
           className="h-5 absolute right-2 bottom-2 bg-slate-500 p-1 rounded-[50%] cursor-pointer active:scale-90"
           onClick={() => handleClickAdd(element)}
-        />
+        /> */}
       </motion.section>
     </motion.article>
   );

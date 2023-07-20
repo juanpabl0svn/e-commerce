@@ -1,11 +1,13 @@
 export default function ShoppingCarElement({
   name,
+  id,
   image,
   units,
   price,
   handleClickDelete,
 }: {
   name: string;
+  id: string;
   image: string;
   units: number;
   price: number;
@@ -36,7 +38,7 @@ export default function ShoppingCarElement({
         type="button"
         value="X"
         className="absolute right-4 cursor-pointer"
-        onClick={() => handleClickDelete(name)}
+        onClick={() => handleClickDelete(id)}
       />
     </article>
   );

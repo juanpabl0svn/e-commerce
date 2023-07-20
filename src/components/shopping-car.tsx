@@ -37,7 +37,8 @@ export default function CarShopScreen({handleClick }) {
               return (
                 <ShoppingCarElement
                   key={key}
-                  name={key}
+                  id={key}
+                  name={value.name}
                   image={value.image}
                   price={value.price}
                   units={value.units}

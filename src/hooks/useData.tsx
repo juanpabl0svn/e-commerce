@@ -11,11 +11,7 @@ import { deleteUser } from "../utils/local-storage";
 function reducer(state: Context, action: Action) {
   const { type } = action;
 
-  if (
-    type === "add-to-cart" ||
-    type === "delete" ||
-    type === "subtract-to-cart"
-  ) {
+  if (type === "handle-cart") {
     return {
       ...state,
       shoppingCar: action.payload,
@@ -58,7 +54,7 @@ function reducer(state: Context, action: Action) {
     };
   }
   if (type === "log-out") {
-    deleteUser()
+    deleteUser();
     return {
       ...state,
       user: undefined,
@@ -89,43 +85,42 @@ const useData = () => {
     user: undefined,
   };
 
-  const [{ shoppingCar, elementSelected, shoppingCarVisibility,user }, dispatch]: [
-    Context,
-    Function
-  ] = useReducer(reducer, firstValue);
+  const [
+    { shoppingCar, elementSelected, shoppingCarVisibility, user },
+    dispatch,
+  ]: [Context, Function] = useReducer(reducer, firstValue);
 
-  function handleClickAdd({ name, image, price, units }: IProduct) {
-    const elementSelected = shoppingCar.elements[name];
+  function handleClickAdd({ _id, name, image, price, units }: IProduct) {
+    const elementSelected = shoppingCar.elements[_id];
 
     let newCar: IShoppingCar;
 
     if (!elementSelected) {
-      const newProduct = { image, price, units: 1 };
+      const newProduct = { image, name, price, units: 1 };
       newCar = {
         ...shoppingCar,
-        elements: { ...shoppingCar.elements, [name]: newProduct },
+        elements: { ...shoppingCar.elements, [_id]: newProduct },
       };
     } else {
       if (units === elementSelected.units) return;
 
-      const newUnits =
-        elementSelected.units + (elementSelected.units <= 100 && 1);
+      const newUnits = elementSelected.units + 1;
       newCar = {
         ...shoppingCar,
         elements: {
           ...shoppingCar.elements,
-          [name]: { ...elementSelected, units: newUnits },
+          [_id]: { ...elementSelected, units: newUnits },
         },
       };
     }
 
     const newTotal = getTotal(newCar);
 
-    dispatch({ type: "add-to-cart", payload: { ...newCar, total: newTotal } });
+    dispatch({ type: "handle-cart", payload: { ...newCar, total: newTotal } });
   }
 
-  function handleClickMinus({ name }: IProduct) {
-    const elementSelected = shoppingCar.elements[name];
+  function handleClickMinus({ _id }: IProduct) {
+    const elementSelected = shoppingCar.elements[_id];
 
     let newCar: IShoppingCar;
 
@@ -136,16 +131,16 @@ const useData = () => {
         ...shoppingCar,
         elements: {
           ...shoppingCar.elements,
-          [name]: { ...elementSelected, units: newUnits },
+          [_id]: { ...elementSelected, units: newUnits },
         },
       };
       if (newUnits === 0) {
-        delete newCar.elements[name];
+        delete newCar.elements[_id];
       }
     }
     const newTotal = getTotal(newCar);
     dispatch({
-      type: "subtract-to-cart",
+      type: "handle-cart",
       payload: { ...newCar, total: newTotal },
     });
   }
@@ -175,38 +170,66 @@ const useData = () => {
     const newCar: IShoppingCar = { ...shoppingCar };
     delete newCar.elements[key];
     const newTotal = getTotal(newCar);
-    dispatch({
-      type: "delete",
-      payload: { ...newCar, total: newTotal },
-    });
+    dispatch({ type: "handle-cart", payload: { ...newCar, total: newTotal } });
   }
 
   function handleClickClean() {
     dispatch({ type: "clean" });
   }
 
-  function logIn(user: User){
-    dispatch({ type: "log-in", payload: user })
+  function logIn(user: User) {
+    dispatch({ type: "log-in", payload: user });
   }
 
-  function logOut(){
-    dispatch({ type: "log-out" })
+  function logOut() {
+    dispatch({ type: "log-out" });
+  }
+
+  function handleCartElements(element: IProduct) {
+    let newShoppingCar: IShoppingCar;
+
+    if (!shoppingCar.elements[element._id]) {
+      if (element.units === 0) return;
+
+      const { image, _id, name, price } = element;
+
+      const newProduct = { image, name, price, units: 1 };
+
+      newShoppingCar = {
+        ...shoppingCar,
+        elements: {
+          ...shoppingCar.elements,
+          [_id]: newProduct,
+        },
+      };
+    } else {
+      newShoppingCar = { ...shoppingCar };
+      delete newShoppingCar.elements[element._id];
+    }
+
+    const newTotal = getTotal(newShoppingCar);
+
+    dispatch({
+      type: "handle-cart",
+      payload: { ...newShoppingCar, total: newTotal },
+    });
   }
 
   return {
     shoppingCar,
     elementSelected,
     shoppingCarVisibility,
+    user,
     handleClickAdd,
     handleClickMinus,
+    handleCartElements,
     handleClickImage,
     handleVisibility,
     handleClickDelete,
     handleVisibilityElement,
     handleClickClean,
-    user,
     logIn,
-    logOut
+    logOut,
   };
 };
 

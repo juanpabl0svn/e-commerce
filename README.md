@@ -14,3 +14,5 @@
 <a href="https://www.flaticon.es/iconos-gratis/estrella" title="estrella iconos">Estrella iconos creados por Freepik - Flaticon</a>
 
 <a href="https://www.flaticon.es/iconos-gratis/estrella" title="estrella iconos">Estrella iconos creados por Gregor Cresnar - Flaticon</a>
+
+<a target="_blank" href="https://icons8.com/icon/15893/shopping-cart">Cart</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>

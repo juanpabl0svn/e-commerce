@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useEffect } from "react";
-import { type IProduct, type Context, User } from "../utils/types";
+import { type IProduct, type User } from "../utils/types";
 import useData from "../hooks/useData";
 import getUser from "../utils/local-storage";
 import fetchBackend from "../utils/operations";
@@ -14,6 +14,7 @@ export const ShoppingCarContext = createContext({
   user: undefined,
   handleClickAdd: (value: IProduct) => {},
   handleClickMinus: (value: IProduct) => {},
+  handleCartElements: (value: IProduct) => {},
   handleClickImage: (value: IProduct) => {},
   handleVisibility: () => {},
   handleClickDelete: (value: string) => {},
@@ -34,6 +35,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     user,
     handleClickAdd,
     handleClickMinus,
+    handleCartElements,
     handleClickImage,
     handleVisibility,
     handleClickDelete,
@@ -95,6 +97,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         user,
         handleClickAdd,
         handleClickMinus,
+        handleCartElements,
         handleClickImage,
         handleVisibility,
         handleClickDelete,

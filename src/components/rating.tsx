@@ -1,5 +1,10 @@
-function Rating({ rating }) {
-  const ratingCounting = [1, 2, 3, 4, 5];
+function Rating({ ranking } : { ranking: Array<number>}) {
+
+  const {length} = ranking
+  const average = ranking.reduce((acc, ranking) => acc + ranking,0)/length
+  const value = Math.floor(average)
+
+  const ratingCounting = [1,2,3,4,5]
 
   return (
     <div className="flex gap-2">
@@ -9,9 +14,9 @@ function Rating({ rating }) {
             className="h-5"
             key={index}
             src={
-              index <= rating ? "/icons/good-star.png" : "/icons/bad-star.png"
+              index <= value ? "/icons/good-star.png" : "/icons/bad-star.png"
             }
-            alt={index <= rating ? "good star" : "bad-star"}
+            alt={value <= index ? "good star" : "bad-star"}
           />
         );
       })}

@@ -67,7 +67,7 @@ export default function Products() {
                   <motion.p className="">
                     {elementSelectedType.description}
                   </motion.p>
-                  <Rating rating={3} />
+                  <Rating ranking={elementSelectedType.ranking} />
                 </motion.section>
               </motion.article>
             );

@@ -25,6 +25,7 @@ export interface IProduct {
   units: number;
   description: string;
   comments: Array<>;
+  ranking: Array<number>;
 }
 
 export type Action =

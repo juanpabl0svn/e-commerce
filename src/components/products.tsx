@@ -6,6 +6,7 @@ import { IProduct } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import fetchBackend from "../utils/operations";
 import Rating from "./rating";
+import CommentsTable from "./comments-table";
 
 export default function Products() {
   const [products, setProducts]: [Array<IProduct>, Function] = useState([]);
@@ -68,6 +69,7 @@ export default function Products() {
                     {elementSelectedType.description}
                   </motion.p>
                   <Rating ranking={elementSelectedType.ranking} />
+                  <CommentsTable comments={elementSelectedType.comments} _id={elementSelectedType._id}/>
                 </motion.section>
               </motion.article>
             );

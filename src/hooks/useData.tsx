@@ -5,6 +5,7 @@ import {
   type Context,
   type Action,
   type User,
+  type Comment,
 } from "../utils/types";
 import { deleteUser } from "../utils/local-storage";
 
@@ -58,6 +59,13 @@ function reducer(state: Context, action: Action) {
     return {
       ...state,
       user: undefined,
+    };
+  }
+
+  if (type === "comment") {
+    return {
+      ...state,
+      elementSelected: { ...state.elementSelected, comments: action.payload },
     };
   }
 
@@ -215,6 +223,13 @@ const useData = () => {
     });
   }
 
+  function handleComment(data: Comment) {
+    const comments = [...elementSelected.comments ] as Array<Comment>;
+    console.log(comments);
+    comments.push(data);
+    dispatch({ type: "comment", payload: comments });
+  }
+
   return {
     shoppingCar,
     elementSelected,
@@ -230,6 +245,7 @@ const useData = () => {
     handleClickClean,
     logIn,
     logOut,
+    handleComment
   };
 };
 

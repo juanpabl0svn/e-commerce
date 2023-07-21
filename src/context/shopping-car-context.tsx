@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useEffect } from "react";
-import { type IProduct, type User } from "../utils/types";
+import { type IProduct, type User, type Comment } from "../utils/types";
 import useData from "../hooks/useData";
 import getUser from "../utils/local-storage";
 import fetchBackend from "../utils/operations";
@@ -20,7 +20,8 @@ export const ShoppingCarContext = createContext({
   handleClickDelete: (value: string) => {},
   handleVisibilityElement: () => {},
   logIn:(value:User)=>{},
-  logOut: ()=>{}
+  logOut: ()=>{},
+  handleComment: (data:Comment) => {},
 });
 
 export function useContextApp() {
@@ -43,6 +44,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     handleClickClean,
     logIn,
     logOut,
+    handleComment
   } = useData();
 
   function controlNavigation() {
@@ -103,7 +105,8 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         handleClickDelete,
         handleVisibilityElement,
         logIn,
-        logOut
+        logOut,
+        handleComment
       }}
     >
       {children}

@@ -1,4 +1,7 @@
-export interface Comments {}
+export interface Comment {
+  username: string;
+  message: string;
+}
 
 export interface User {
   username: string;
@@ -43,4 +46,5 @@ export type Action =
   | { type: "set-visibility-element" }
   | { type: "clean" }
   | { type: "log-in"; payload: User }
-  | { type: "log-out" };
+  | { type: "log-out" } |
+  {type : 'comment'; payload : Array<Comment> }

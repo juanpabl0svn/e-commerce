@@ -11,20 +11,21 @@ export default async function fetchBackend({
 
   const response = await fetch(URL + pathname, request);
 
-
-  if (response.status !== 200){
-    return 
+  if (response.status !== 200) {
+    return null;
   }
 
   const data = await response.json();
-
 
   if (handleFunction) {
     handleFunction(data);
   }
 
-return new Promise((resolve, reject) => {
-  resolve(data);
-  reject(data);
-})
+  return new Promise((resolve, reject) => {
+    if (data) {
+      resolve(data);
+    } else {
+      reject(data);
+    }
+  });
 }

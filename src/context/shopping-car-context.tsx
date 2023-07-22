@@ -81,6 +81,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         pathname: "/login",
         request,
       }).then((res) => {
+        console.log(res)
         if (res) {
           logIn(data);
         } else {

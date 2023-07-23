@@ -225,7 +225,6 @@ const useData = () => {
 
   function handleComment(data: Comment) {
     const comments = [...elementSelected.comments ] as Array<Comment>;
-    console.log(comments);
     comments.push(data);
     dispatch({ type: "comment", payload: comments });
   }

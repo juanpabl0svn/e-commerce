@@ -19,9 +19,9 @@ export const ShoppingCarContext = createContext({
   handleVisibility: () => {},
   handleClickDelete: (value: string) => {},
   handleVisibilityElement: () => {},
-  logIn:(value:User)=>{},
-  logOut: ()=>{},
-  handleComment: (data:Comment) => {},
+  logIn: (value: User) => {},
+  logOut: () => {},
+  handleComment: (data: Comment) => {},
 });
 
 export function useContextApp() {
@@ -44,7 +44,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
     handleClickClean,
     logIn,
     logOut,
-    handleComment
+    handleComment,
   } = useData();
 
   function controlNavigation() {
@@ -81,7 +81,6 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         pathname: "/login",
         request,
       }).then((res) => {
-        console.log(res)
         if (res) {
           logIn(data);
         } else {
@@ -107,7 +106,7 @@ export default function ShoppingCar({ children }: { children: ReactNode }) {
         handleVisibilityElement,
         logIn,
         logOut,
-        handleComment
+        handleComment,
       }}
     >
       {children}

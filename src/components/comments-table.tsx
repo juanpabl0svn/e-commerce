@@ -1,7 +1,8 @@
-import { type Comment as TComment } from "../utils/types";
+import { User, type Comment as TComment } from "../utils/types";
 import Comment from "./comment";
 import { useContextApp } from "../context/shopping-car-context";
 import fetchBackend from "../utils/operations";
+import { DOMElement } from "react";
 
 function CommentsTable({
   comments,
@@ -14,11 +15,15 @@ function CommentsTable({
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!user){
+      alert('Inicie sesion para poder comentar publicaciones')
+      return
+    }
     const { message } = Object.fromEntries(new FormData(e.target));
-
+    const userType = user as User
     const body = {
       message,
-      username: user.username,
+      username: userType.username,
       _id,
     };
 
@@ -36,22 +41,25 @@ function CommentsTable({
       handleFunction: handleComment,
     });
 
-    console.log(e)
+    const form = document.getElementById('form') as HTMLFormElement
+    form.reset()
+
+
   }
 
   return (
     <article className="flex flex-col">
-      <div className="h-40 overflow-y-scroll">
-        {comments.map((el, index) => (
+      <div className="h-40 overflow-y-scroll bg-slate-400">
+        {comments.length !== 0 ? comments.map((el, index) => (
           <Comment key={index} name={el.username} message={el.message} />
-        ))}
+        )): (<h1>Sin comentarios</h1>)}
       </div>
-      <form className="h-10 w-30 relative" onSubmit={handleSubmit}>
+      <form className="h-10 w-30 relative" id="form" onSubmit={handleSubmit}>
         <input
           type="text"
+          id="message"
           name="message"
           className="py-1 pl-4 pr-10 rounded-r-lg w-full"
-          onSubmit={(e) => (e.target = "")}
         />
         <input
           type="submit"

@@ -22,11 +22,13 @@ export default function Product({
   const { handleCartElements, elementSelected, handleClickImage, shoppingCar } =
     useContextApp();
 
+    const elementSelectedType = (elementSelected as unknown) as IProduct
+
   return (
     <motion.article
       className={`h-auto w-auto object-cover hover:scale-105 transition-all duration-300 shadow-[rgba(0,_0,_0,_0.07)_0px_1px_1px,_rgba(0,_0,_0,_0.07)_0px_2px_2px,_rgba(0,_0,_0,_0.07)_0px_4px_4px,_rgba(0,_0,_0,_0.07)_0px_8px_8px,_rgba(0,_0,_0,_0.07)_0px_16px_16px] min-h-[200px] ${
         elementSelected != undefined &&
-        elementSelected.name == element.name &&
+        elementSelectedType.name == element.name &&
         "opacity-0"
       }`}
     >
@@ -35,12 +37,12 @@ export default function Product({
         src={element.image}
         alt={element.name}
         className={`rounded-t-xl h-48 aspect-auto ${
-          (elementSelected?.name != element?.name ||
+          (elementSelectedType?.name != element?.name ||
             elementSelected == undefined) &&
           "cursor-pointer"
         }`}
         onClick={() =>
-          (elementSelected?.name != element?.name ||
+          (elementSelectedType?.name != element?.name ||
             elementSelected == undefined) &&
           handleClickImage(element)
         }
